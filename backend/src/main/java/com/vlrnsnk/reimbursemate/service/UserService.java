@@ -47,6 +47,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Update user role
+     *
+     * @param id User id
+     * @param newRole New role
+     * @return Updated user
+     */
     public Optional<User> updateUserRole(Long id, String newRole) {
         User.Role role;
 
@@ -67,5 +74,23 @@ public class UserService {
         } else {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Delete user
+     *
+     * @param id User id
+     * @return True if user is deleted, false otherwise
+     */
+    public boolean deleteUser(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+
+            return true;
+        }
+
+        return false;
     }
 }

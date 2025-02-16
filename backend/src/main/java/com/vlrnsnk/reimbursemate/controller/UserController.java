@@ -75,4 +75,21 @@ public class UserController {
                 .map(updatedUser -> ResponseEntity.ok().body(updatedUser))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    /**
+     * Delete user
+     *
+     * @param id User id
+     * @return No content if user is deleted, not found otherwise
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        boolean isUserDeleted = userService.deleteUser(id);
+
+        if (isUserDeleted) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }
