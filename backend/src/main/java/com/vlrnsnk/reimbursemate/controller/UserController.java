@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -57,5 +58,21 @@ public class UserController {
         User createdUser = userService.createUser(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    /**
+     * Update user role
+     *
+     * @param id User id
+     * @param request Request body with new role
+     * @return Updated user
+     */
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<User> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String newRole = request.get("role");
+
+        return userService.updateUserRole(id, newRole)
+                .map(updatedUser -> ResponseEntity.ok().body(updatedUser))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

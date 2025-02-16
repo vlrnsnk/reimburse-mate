@@ -46,4 +46,26 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    public Optional<User> updateUserRole(Long id, String newRole) {
+        User.Role role;
+
+        try {
+            role = User.Role.valueOf(newRole);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setRole(role);
+            userRepository.save(user);
+
+            return Optional.of(user);
+        } else {
+            return Optional.empty();
+        }
+    }
 }
