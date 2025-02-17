@@ -20,7 +20,7 @@ public class Reimbursement {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 8, nullable = false)
+    @Column(nullable = false)
     private Status status;
 
     @ManyToOne
