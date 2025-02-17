@@ -25,4 +25,15 @@ public class ReimbursementService {
     public List<Reimbursement> getAllReimbursements() {
         return reimbursementRepository.findAll();
     }
+
+    /**
+     * Get reimbursements by status
+     *
+     * @param status Reimbursement status
+     * @return List of reimbursements with the given status
+     */
+    public List<Reimbursement> getReimbursementsByStatus(Reimbursement.Status status) {
+        return reimbursementRepository.findByStatus(status);
+    }
+
 }
