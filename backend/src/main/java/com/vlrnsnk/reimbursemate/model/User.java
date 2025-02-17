@@ -23,26 +23,51 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.USER;
+    private Role role;
 
     public User() {
     }
 
+    /**
+     * Constructor for creating a new user
+     */
+    public User(
+            String firstName,
+            String lastName,
+            String username,
+            String password,
+            Role role
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.role = role != null ? role : Role.USER;
+    }
+
+    /**
+     * Constructor for retrieving an existing user
+     */
     public User(
             Long id,
             String firstName,
             String lastName,
             String username,
-            String password
+            String password,
+            Role role
     ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
-    // Getters and Setters
+    /**
+     * Getters and setters
+     */
+
     public Long getId() {
         return id;
     }

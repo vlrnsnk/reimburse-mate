@@ -34,7 +34,12 @@ public class Reimbursement {
     /**
      * Constructor for creating a new reimbursement
      */
-    public Reimbursement(String description, BigDecimal amount, Status status, User user) {
+    public Reimbursement(
+            String description,
+            BigDecimal amount,
+            Status status,
+            User user
+    ) {
         this.description = description;
         this.amount = amount;
         this.status = status != null ? status : Status.PENDING;
