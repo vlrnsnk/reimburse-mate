@@ -1,10 +1,14 @@
 package com.vlrnsnk.reimbursemate.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Reimbursement {
@@ -28,6 +32,14 @@ public class Reimbursement {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     public Reimbursement() {
     }
 
@@ -38,12 +50,16 @@ public class Reimbursement {
             String description,
             BigDecimal amount,
             Status status,
-            User user
+            User user,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
     ) {
         this.description = description;
         this.amount = amount;
         this.status = status != null ? status : Status.PENDING;
         this.user = user;
+        this.createdAt = Objects.requireNonNullElse(createdAt, LocalDateTime.now());
+        this.updatedAt = Objects.requireNonNullElse(updatedAt, LocalDateTime.now());
     }
 
     /**
@@ -54,13 +70,17 @@ public class Reimbursement {
             String description,
             BigDecimal amount,
             Status status,
-            User user
+            User user,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
     ) {
         this.id = id;
         this.description = description;
         this.amount = amount;
         this.status = status;
         this.user = user;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     /**
@@ -107,6 +127,22 @@ public class Reimbursement {
         this.user = user;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         return "Reimbursement{" +
@@ -126,4 +162,5 @@ public class Reimbursement {
         APPROVED,
         REJECTED,
     }
+    
 }
