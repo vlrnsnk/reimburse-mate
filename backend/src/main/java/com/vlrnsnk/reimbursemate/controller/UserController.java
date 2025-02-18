@@ -1,5 +1,7 @@
 package com.vlrnsnk.reimbursemate.controller;
 
+import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -27,10 +30,10 @@ public class UserController {
      * @return List of all users
      */
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
 
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(UserMapper.toDTOList(users));
     }
 
     /**
@@ -40,10 +43,11 @@ public class UserController {
      * @return User with the given id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<User> user = userService.getUserById(id);
+
+        return user.map(value -> ResponseEntity.ok(UserMapper.toDTO(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -52,12 +56,11 @@ public class UserController {
      * @param user User to be created
      * @return Created user
      */
-    // TODO: Add username validation
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDTO(createdUser));
     }
 
     /**
@@ -68,11 +71,11 @@ public class UserController {
      * @return Updated user
      */
     @PatchMapping("/{id}/role")
-    public ResponseEntity<User> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    public ResponseEntity<UserDTO> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
         String newRole = request.get("role");
 
         return userService.updateUserRole(id, newRole)
-                .map(updatedUser -> ResponseEntity.ok().body(updatedUser))
+                .map(updatedUser -> ResponseEntity.ok(UserMapper.toDTO(updatedUser)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
