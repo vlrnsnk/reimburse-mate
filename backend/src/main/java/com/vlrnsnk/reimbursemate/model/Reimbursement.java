@@ -32,6 +32,13 @@ public class Reimbursement {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "approver_id", referencedColumnName = "id")
+    private User approver;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String comment;
+
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -51,6 +58,8 @@ public class Reimbursement {
             BigDecimal amount,
             Status status,
             User user,
+            User approver,
+            String comment,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
@@ -58,6 +67,8 @@ public class Reimbursement {
         this.amount = amount;
         this.status = status != null ? status : Status.PENDING;
         this.user = user;
+        this.approver = approver;
+        this.comment = comment;
         this.createdAt = Objects.requireNonNullElse(createdAt, LocalDateTime.now());
         this.updatedAt = Objects.requireNonNullElse(updatedAt, LocalDateTime.now());
     }
@@ -71,6 +82,8 @@ public class Reimbursement {
             BigDecimal amount,
             Status status,
             User user,
+            User approver,
+            String comment,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
@@ -79,6 +92,8 @@ public class Reimbursement {
         this.amount = amount;
         this.status = status;
         this.user = user;
+        this.approver = approver;
+        this.comment = comment;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -127,6 +142,22 @@ public class Reimbursement {
         this.user = user;
     }
 
+    public User getApprover() {
+        return approver;
+    }
+
+    public void setApprover(User approver) {
+        this.approver = approver;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -162,5 +193,5 @@ public class Reimbursement {
         APPROVED,
         REJECTED,
     }
-    
+
 }

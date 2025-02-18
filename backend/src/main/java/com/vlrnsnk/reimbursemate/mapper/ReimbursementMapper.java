@@ -22,6 +22,8 @@ public class ReimbursementMapper {
                 reimbursement.getAmount(),
                 reimbursement.getStatus().name(),
                 reimbursement.getUser().getId(),
+                reimbursement.getApprover() == null ? null : reimbursement.getApprover().getId(),
+                reimbursement.getComment(),
                 reimbursement.getCreatedAt().toString(),
                 reimbursement.getUpdatedAt().toString()
         );

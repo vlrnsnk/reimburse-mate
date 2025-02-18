@@ -10,6 +10,8 @@ public class ReimbursementDTO {
     private final BigDecimal amount;
     private final Reimbursement.Status status;
     private final Long userId;
+    private final Long approverId;
+    private final String comment;
     private final String createdAt;
     private final String updatedAt;
 
@@ -19,6 +21,8 @@ public class ReimbursementDTO {
             BigDecimal amount,
             String status,
             Long userId,
+            Long approverId,
+            String comment,
             String createdAt,
             String updatedAt
     ) {
@@ -27,6 +31,8 @@ public class ReimbursementDTO {
         this.amount = amount;
         this.status = Reimbursement.Status.valueOf(status);
         this.userId = userId;
+        this.approverId = approverId;
+        this.comment = comment;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -57,6 +63,14 @@ public class ReimbursementDTO {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Long getApproverId() {
+        return approverId;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
 }
