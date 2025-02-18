@@ -31,9 +31,9 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+        List<UserDTO> users = userService.getAllUsers();
 
-        return ResponseEntity.ok(UserMapper.toDTOList(users));
+        return ResponseEntity.ok(users);
     }
 
     /**
@@ -44,9 +44,8 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-
-        return user.map(value -> ResponseEntity.ok(UserMapper.toDTO(value)))
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -58,9 +57,9 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+        UserDTO createdUser = userService.createUser(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDTO(createdUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     /**
@@ -75,8 +74,8 @@ public class UserController {
         String newRole = request.get("role");
 
         return userService.updateUserRole(id, newRole)
-                .map(updatedUser -> ResponseEntity.ok(UserMapper.toDTO(updatedUser)))
-                .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

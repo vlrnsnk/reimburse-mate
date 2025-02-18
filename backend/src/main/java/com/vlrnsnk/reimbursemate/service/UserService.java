@@ -1,5 +1,7 @@
 package com.vlrnsnk.reimbursemate.service;
 
+import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -23,8 +27,10 @@ public class UserService {
      *
      * @return List of all users
      */
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        return userMapper.toDTOList(users);
     }
 
     /**
@@ -33,8 +39,10 @@ public class UserService {
      * @param id User id
      * @return User with the given id
      */
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<UserDTO> getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+
+        return user.map(userMapper::toDTO);
     }
 
     /**
@@ -43,8 +51,10 @@ public class UserService {
      * @param user User to be created
      * @return Created user
      */
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDTO createUser(User user) {
+        User createdUser = userRepository.save(user);
+
+        return userMapper.toDTO(createdUser);
     }
 
     /**
@@ -54,7 +64,7 @@ public class UserService {
      * @param newRole New role
      * @return Updated user
      */
-    public Optional<User> updateUserRole(Long id, String newRole) {
+    public Optional<UserDTO> updateUserRole(Long id, String newRole) {
         User.Role role;
 
         try {
@@ -70,7 +80,7 @@ public class UserService {
             user.setRole(role);
             userRepository.save(user);
 
-            return Optional.of(user);
+            return Optional.of(userMapper.toDTO(user));
         } else {
             return Optional.empty();
         }
