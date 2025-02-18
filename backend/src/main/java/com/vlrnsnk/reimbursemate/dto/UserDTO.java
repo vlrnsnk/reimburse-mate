@@ -1,11 +1,13 @@
 package com.vlrnsnk.reimbursemate.dto;
 
+import com.vlrnsnk.reimbursemate.model.User;
+
 public class UserDTO {
     private Long id;
     private String firstName;
     private String lastName;
     private String username;
-    private String role;
+    private User.Role role;
 
     public UserDTO(
             Long id,
@@ -18,7 +20,7 @@ public class UserDTO {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.role = role;
+        this.role = User.Role.valueOf(role);
     }
 
     public Long getId() {
@@ -37,7 +39,7 @@ public class UserDTO {
         return username;
     }
 
-    public String getRole() {
+    public User.Role getRole() {
         return role;
     }
 }
