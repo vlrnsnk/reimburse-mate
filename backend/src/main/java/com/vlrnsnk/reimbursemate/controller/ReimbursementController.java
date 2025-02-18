@@ -1,5 +1,6 @@
 package com.vlrnsnk.reimbursemate.controller;
 
+import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/reimbursements")
@@ -27,16 +27,16 @@ public class ReimbursementController {
      * @return List of reimbursements
      */
     @GetMapping
-    public ResponseEntity<List<Reimbursement>> getAllReimbursements(@RequestParam(required = false) String status) {
+    public ResponseEntity<List<ReimbursementDTO>> getAllReimbursements(@RequestParam(required = false) String status) {
         if (status == null) {
-            List<Reimbursement> reimbursements = reimbursementService.getAllReimbursements();
+            List<ReimbursementDTO> reimbursements = reimbursementService.getAllReimbursements();
 
             return ResponseEntity.ok(reimbursements);
         }
 
         try {
             Reimbursement.Status reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
-            List<Reimbursement> reimbursements = reimbursementService.getReimbursementsByStatus(reimbursementStatus);
+            List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsByStatus(reimbursementStatus);
 
             return ResponseEntity.ok(reimbursements);
         } catch (IllegalArgumentException e) {

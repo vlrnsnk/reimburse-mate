@@ -1,5 +1,7 @@
 package com.vlrnsnk.reimbursemate.service;
 
+import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
+import com.vlrnsnk.reimbursemate.mapper.ReimbursementMapper;
 import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,15 @@ import java.util.List;
 public class ReimbursementService {
 
     private final ReimbursementRepository reimbursementRepository;
+    private final ReimbursementMapper reimbursementMapper;
 
     @Autowired
-    public ReimbursementService(ReimbursementRepository reimbursementRepository) {
+    public ReimbursementService(
+            ReimbursementRepository reimbursementRepository,
+            ReimbursementMapper reimbursementMapper
+    ) {
         this.reimbursementRepository = reimbursementRepository;
+        this.reimbursementMapper = reimbursementMapper;
     }
 
     /**
@@ -22,8 +29,10 @@ public class ReimbursementService {
      *
      * @return List of all reimbursements
      */
-    public List<Reimbursement> getAllReimbursements() {
-        return reimbursementRepository.findAll();
+    public List<ReimbursementDTO> getAllReimbursements() {
+        List<Reimbursement> reimbursements = reimbursementRepository.findAll();
+
+        return reimbursementMapper.toDTOList(reimbursements);
     }
 
     /**
@@ -32,8 +41,10 @@ public class ReimbursementService {
      * @param status Reimbursement status
      * @return List of reimbursements with the given status
      */
-    public List<Reimbursement> getReimbursementsByStatus(Reimbursement.Status status) {
-        return reimbursementRepository.findByStatus(status);
+    public List<ReimbursementDTO> getReimbursementsByStatus(Reimbursement.Status status) {
+        List<Reimbursement> reimbursements = reimbursementRepository.findByStatus(status);
+
+        return reimbursementMapper.toDTOList(reimbursements);
     }
 
 }
