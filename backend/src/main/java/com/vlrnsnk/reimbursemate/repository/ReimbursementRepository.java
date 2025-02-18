@@ -9,4 +9,5 @@ public interface ReimbursementRepository extends JpaRepository<Reimbursement, Lo
 
     List<Reimbursement> findByStatus(Reimbursement.Status status);
 
+    List<Reimbursement> findAll();
 }
