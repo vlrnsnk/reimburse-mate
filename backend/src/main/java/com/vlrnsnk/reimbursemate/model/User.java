@@ -1,6 +1,11 @@
 package com.vlrnsnk.reimbursemate.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class User {
@@ -25,6 +30,14 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     public User() {
     }
 
@@ -36,13 +49,17 @@ public class User {
             String lastName,
             String username,
             String password,
-            Role role
+            Role role,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.role = role != null ? role : Role.USER;
+        this.createdAt = Objects.requireNonNullElse(createdAt, LocalDateTime.now());
+        this.updatedAt = Objects.requireNonNullElse(updatedAt, LocalDateTime.now());
     }
 
     /**
@@ -54,7 +71,9 @@ public class User {
             String lastName,
             String username,
             String password,
-            Role role
+            Role role,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -62,6 +81,8 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     /**
@@ -114,6 +135,22 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
