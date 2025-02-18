@@ -8,6 +8,5 @@ import java.util.List;
 public interface ReimbursementRepository extends JpaRepository<Reimbursement, Long> {
 
     List<Reimbursement> findByStatus(Reimbursement.Status status);
-
-    List<Reimbursement> findAll();
+    
 }
