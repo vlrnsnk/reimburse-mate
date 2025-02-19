@@ -47,4 +47,29 @@ public class ReimbursementService {
         return reimbursementMapper.toDTOList(reimbursements);
     }
 
+    /**
+     * Get reimbursements by user id
+     *
+     * @param userId User id
+     * @return List of reimbursements with the given user id
+     */
+    public List<ReimbursementDTO> getReimbursementsByUserId(Long userId) {
+        List<Reimbursement> reimbursements = reimbursementRepository.findByUserId(userId);
+
+        return reimbursementMapper.toDTOList(reimbursements);
+    }
+
+    /**
+     * Get reimbursements by user id and status
+     *
+     * @param userId User id
+     * @param status Reimbursement status
+     * @return List of reimbursements with the given user id and status
+     */
+    public List<ReimbursementDTO> getReimbursementsByUserIdAndStatus(Long userId, Reimbursement.Status status) {
+        List<Reimbursement> reimbursements = reimbursementRepository.findByUserIdAndStatus(userId, status);
+
+        return reimbursementMapper.toDTOList(reimbursements);
+    }
+
 }

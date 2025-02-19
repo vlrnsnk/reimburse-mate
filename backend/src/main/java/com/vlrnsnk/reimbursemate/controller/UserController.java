@@ -1,7 +1,10 @@
 package com.vlrnsnk.reimbursemate.controller;
 
+import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.model.User;
+import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +19,12 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final ReimbursementService reimbursementService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ReimbursementService reimbursementService) {
         this.userService = userService;
+        this.reimbursementService = reimbursementService;
     }
 
     /**
@@ -91,6 +96,24 @@ public class UserController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{userId}/reimbursements")
+    public ResponseEntity<List<ReimbursementDTO>> getUserReimbursements(@PathVariable Long userId, @RequestParam(required = false) String status) {
+        if (status == null) {
+            List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsByUserId(userId);
+
+            return ResponseEntity.ok(reimbursements);
+        }
+
+        try {
+            Reimbursement.Status reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
+            List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsByUserIdAndStatus(userId, reimbursementStatus);
+
+            return ResponseEntity.ok(reimbursements);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
 }
