@@ -36,11 +36,11 @@ public class UserService {
     /**
      * Get user by id
      *
-     * @param id User id
+     * @param userId User id
      * @return User with the given id
      */
-    public Optional<UserDTO> getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
+    public Optional<UserDTO> getUserById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
 
         return user.map(userMapper::toDTO);
     }
@@ -60,11 +60,11 @@ public class UserService {
     /**
      * Update user role
      *
-     * @param id User id
+     * @param userId User id
      * @param newRole New role
      * @return Updated user
      */
-    public Optional<UserDTO> updateUserRole(Long id, String newRole) {
+    public Optional<UserDTO> updateUserRole(Long userId, String newRole) {
         User.Role role;
 
         try {
@@ -73,7 +73,7 @@ public class UserService {
             return Optional.empty();
         }
 
-        Optional<User> userOptional = userRepository.findById(id);
+        Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -89,14 +89,14 @@ public class UserService {
     /**
      * Delete user
      *
-     * @param id User id
+     * @param userId User id
      * @return True if user is deleted, false otherwise
      */
-    public boolean deleteUser(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public boolean deleteUser(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
-            userRepository.deleteById(id);
+            userRepository.deleteById(userId);
 
             return true;
         }

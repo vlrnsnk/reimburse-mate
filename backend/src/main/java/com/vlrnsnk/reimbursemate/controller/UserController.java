@@ -1,7 +1,6 @@
 package com.vlrnsnk.reimbursemate.controller;
 
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
-import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -39,12 +37,12 @@ public class UserController {
     /**
      * Get user by id
      *
-     * @param id User id
+     * @param userId User id
      * @return User with the given id
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -65,15 +63,15 @@ public class UserController {
     /**
      * Update user role
      *
-     * @param id User id
+     * @param userId User id
      * @param request Request body with new role
      * @return Updated user
      */
-    @PatchMapping("/{id}/role")
-    public ResponseEntity<UserDTO> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    @PatchMapping("/{userId}/role")
+    public ResponseEntity<UserDTO> updateUserRole(@PathVariable Long userId, @RequestBody Map<String, String> request) {
         String newRole = request.get("role");
 
-        return userService.updateUserRole(id, newRole)
+        return userService.updateUserRole(userId, newRole)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -81,12 +79,12 @@ public class UserController {
     /**
      * Delete user
      *
-     * @param id User id
+     * @param userId User id
      * @return No content if user is deleted, not found otherwise
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        boolean isUserDeleted = userService.deleteUser(id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        boolean isUserDeleted = userService.deleteUser(userId);
 
         if (isUserDeleted) {
             return ResponseEntity.noContent().build();
@@ -94,4 +92,5 @@ public class UserController {
 
         return ResponseEntity.notFound().build();
     }
+
 }
