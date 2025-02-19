@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 
 public class ReimbursementDTO {
     private final Long id;
-    private final String description;
-    private final BigDecimal amount;
+    private String description;
+    private BigDecimal amount;
     private final Reimbursement.Status status;
     private final Long userId;
     private final Long approverId;
@@ -99,5 +99,13 @@ public class ReimbursementDTO {
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
                 '}';
+    }
+
+    public void setAmount(String newAmount) {
+        this.amount = new BigDecimal(newAmount);
+    }
+
+    public void setDescription(String newDescription) {
+        this.description = newDescription;
     }
 }

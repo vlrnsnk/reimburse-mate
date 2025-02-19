@@ -131,11 +131,30 @@ public class UserController {
      * @return Created reimbursement
      */
     @PostMapping("/{userId}/reimbursements")
-    public ResponseEntity<ReimbursementDTO> createReimbursement(@PathVariable Long userId, @RequestBody ReimbursementDTO reimbursementDTO) {
+    public ResponseEntity<ReimbursementDTO> createUserReimbursement(@PathVariable Long userId, @RequestBody ReimbursementDTO reimbursementDTO) {
         User user = userService.getUserEntityById(userId).orElse(null);
         ReimbursementDTO createdReimbursement = reimbursementService.createReimbursement(user, reimbursementDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReimbursement);
+    }
+
+    /**
+     * Update a reimbursement
+     *
+     * @param userId User id
+     * @param reimbursementId Reimbursement id
+     * @param request Request body with updates (amount and description)
+     * @return Updated reimbursement
+     */
+    @PatchMapping("/{userId}/reimbursements/{reimbursementId}")
+    public ResponseEntity<ReimbursementDTO> updateReimbursement(
+            @PathVariable Long userId,
+            @PathVariable Long reimbursementId,
+            @RequestBody Map<String, String> request
+    ) {
+        ReimbursementDTO updatedReimbursement = reimbursementService.updateReimbursement(userId, reimbursementId, request);
+
+        return ResponseEntity.ok(updatedReimbursement);
     }
 
 }

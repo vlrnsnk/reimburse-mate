@@ -1,15 +1,22 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
+import com.vlrnsnk.reimbursemate.exception.NotFoundException;
+import com.vlrnsnk.reimbursemate.exception.ValidationException;
 import com.vlrnsnk.reimbursemate.mapper.ReimbursementMapper;
 import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ReimbursementService {
@@ -25,6 +32,8 @@ public class ReimbursementService {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementMapper = reimbursementMapper;
     }
+
+    // TODO: change returns to Optional
 
     /**
      * Get all reimbursements
@@ -75,6 +84,16 @@ public class ReimbursementService {
     }
 
     /**
+     * Get reimbursement by id
+     *
+     * @param reimbursementId Reimbursement id
+     * @return Reimbursement with the given id
+     */
+    public Optional<Reimbursement> getReimbursementById(Long reimbursementId) {
+        return reimbursementRepository.findById(reimbursementId);
+    }
+
+    /**
      * Create a new reimbursement
      *
      * @param user User entity
@@ -89,4 +108,40 @@ public class ReimbursementService {
         return reimbursementMapper.toDTO(createdReimbursement);
     }
 
+    public ReimbursementDTO updateReimbursement(
+            Long userId,
+            Long reimbursementId,
+            Map<String, String> updates
+    ) {
+        Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
+                .orElseThrow(() -> new NotFoundException("Reimbursement not found"));
+
+        if (reimbursement.getStatus() != Reimbursement.Status.PENDING || !reimbursement.getUser().getId().equals(userId)) {
+            throw new ValidationException("Reimbursement is not in a pending state or does not belong to the user");
+        }
+
+        if (updates.containsKey("amount")) {
+            String newAmount = updates.get("amount");
+
+            if (newAmount != null && !newAmount.isEmpty()) {
+                reimbursement.setAmount(new BigDecimal(newAmount));
+            } else {
+                throw new ValidationException("Invalid amount provided");
+            }
+        }
+
+        if (updates.containsKey("description")) {
+            String newDescription = updates.get("description");
+
+            if (newDescription != null && !newDescription.isEmpty()) {
+                reimbursement.setDescription(newDescription);
+            } else {
+                throw new ValidationException("Invalid description provided");
+            }
+        }
+
+        Reimbursement updatedReimbursement = reimbursementRepository.save(reimbursement);
+
+        return reimbursementMapper.toDTO(updatedReimbursement);
+    }
 }
