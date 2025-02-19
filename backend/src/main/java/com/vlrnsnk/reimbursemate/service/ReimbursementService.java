@@ -2,7 +2,9 @@ package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.mapper.ReimbursementMapper;
+import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.Reimbursement;
+import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +20,8 @@ public class ReimbursementService {
     @Autowired
     public ReimbursementService(
             ReimbursementRepository reimbursementRepository,
-            ReimbursementMapper reimbursementMapper
-    ) {
+            ReimbursementMapper reimbursementMapper,
+            UserMapper userMapper) {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementMapper = reimbursementMapper;
     }
@@ -70,6 +72,21 @@ public class ReimbursementService {
         List<Reimbursement> reimbursements = reimbursementRepository.findByUserIdAndStatus(userId, status);
 
         return reimbursementMapper.toDTOList(reimbursements);
+    }
+
+    /**
+     * Create a new reimbursement
+     *
+     * @param user User entity
+     * @param reimbursementDTO ReimbursementDTO
+     * @return Created reimbursement
+     */
+    public ReimbursementDTO createReimbursement(User user, ReimbursementDTO reimbursementDTO) {
+        Reimbursement reimbursement = reimbursementMapper.toEntity(reimbursementDTO);
+        reimbursement.setUser(user);
+        Reimbursement createdReimbursement = reimbursementRepository.save(reimbursement);
+
+        return reimbursementMapper.toDTO(createdReimbursement);
     }
 
 }

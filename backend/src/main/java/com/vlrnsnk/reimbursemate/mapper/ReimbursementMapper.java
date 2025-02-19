@@ -10,6 +10,22 @@ import java.util.List;
 public class ReimbursementMapper {
 
     /**
+     * Maps a ReimbursementDTO to a Reimbursement entity
+     *
+     * @param reimbursementDTO the ReimbursementDTO to be mapped
+     * @return the Reimbursement entity
+     */
+    public Reimbursement toEntity(ReimbursementDTO reimbursementDTO) {
+        Reimbursement reimbursement = new Reimbursement();
+        reimbursement.setDescription(reimbursementDTO.getDescription());
+        reimbursement.setAmount(reimbursementDTO.getAmount());
+        reimbursement.setStatus(Reimbursement.Status.valueOf(reimbursementDTO.getStatus().toString().toUpperCase()));
+        reimbursement.setComment(reimbursementDTO.getComment());
+
+        return reimbursement;
+    }
+
+    /**
      * Maps a Reimbursement entity to a ReimbursementDTO
      *
      * @param reimbursement the Reimbursement entity to be mapped

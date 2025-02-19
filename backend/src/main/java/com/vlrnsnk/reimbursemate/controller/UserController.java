@@ -98,6 +98,13 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Get all reimbursements of a user
+     *
+     * @param userId User id
+     * @param status Reimbursement status
+     * @return List of reimbursements
+     */
     @GetMapping("/{userId}/reimbursements")
     public ResponseEntity<List<ReimbursementDTO>> getUserReimbursements(@PathVariable Long userId, @RequestParam(required = false) String status) {
         if (status == null) {
@@ -114,6 +121,21 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    /**
+     * Create a new reimbursement
+     *
+     * @param userId User id
+     * @param reimbursementDTO Reimbursement to be created
+     * @return Created reimbursement
+     */
+    @PostMapping("/{userId}/reimbursements")
+    public ResponseEntity<ReimbursementDTO> createReimbursement(@PathVariable Long userId, @RequestBody ReimbursementDTO reimbursementDTO) {
+        User user = userService.getUserEntityById(userId).orElse(null);
+        ReimbursementDTO createdReimbursement = reimbursementService.createReimbursement(user, reimbursementDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdReimbursement);
     }
 
 }

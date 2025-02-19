@@ -46,6 +46,16 @@ public class UserService {
     }
 
     /**
+     * Get user entity by id
+     *
+     * @param userId User id
+     * @return User entity with the given id
+     */
+    public Optional<User> getUserEntityById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    /**
      * Create a new user
      *
      * @param user User to be created
@@ -103,4 +113,5 @@ public class UserService {
 
         return false;
     }
+
 }

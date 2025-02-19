@@ -37,7 +37,7 @@ public class Reimbursement {
     @JoinColumn(name = "approver_id", referencedColumnName = "id")
     private User approver;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @Column(nullable = false, updatable = false)

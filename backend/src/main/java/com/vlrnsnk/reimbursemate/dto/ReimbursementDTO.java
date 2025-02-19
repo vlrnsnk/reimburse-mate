@@ -15,6 +15,19 @@ public class ReimbursementDTO {
     private final String createdAt;
     private final String updatedAt;
 
+    /**
+     * Constructor for output (all fields)
+     *
+     * @param id Reimbursement id
+     * @param description Reimbursement description
+     * @param amount Reimbursement amount
+     * @param status Reimbursement status
+     * @param userId User id
+     * @param approverId Approver id
+     * @param comment Comment
+     * @param createdAt Created at
+     * @param updatedAt Updated at
+     */
     public ReimbursementDTO(
             Long id,
             String description,
@@ -29,7 +42,7 @@ public class ReimbursementDTO {
         this.id = id;
         this.description = description;
         this.amount = amount;
-        this.status = Reimbursement.Status.valueOf(status);
+        this.status = status != null ? Reimbursement.Status.valueOf(status) : Reimbursement.Status.PENDING;
         this.userId = userId;
         this.approverId = approverId;
         this.comment = comment;
@@ -73,4 +86,18 @@ public class ReimbursementDTO {
         return comment;
     }
 
+    @Override
+    public String toString() {
+        return "ReimbursementDTO{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", status=" + status +
+                ", userId=" + userId +
+                ", approverId=" + approverId +
+                ", comment='" + comment + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                '}';
+    }
 }

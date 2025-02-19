@@ -11,6 +11,22 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     /**
+     * Maps a UserDTO to a User entity
+     *
+     * @param userDTO the UserDTO to be mapped
+     * @return the User entity
+     */
+    public User toEntity(UserDTO userDTO) {
+        User user = new User();
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUsername(userDTO.getUsername());
+        user.setRole(User.Role.valueOf(userDTO.getRole().toString().toUpperCase()));
+
+        return user;
+    }
+
+    /**
      * Maps a User entity to a UserDTO
      *
      * @param user the User entity to be mapped
