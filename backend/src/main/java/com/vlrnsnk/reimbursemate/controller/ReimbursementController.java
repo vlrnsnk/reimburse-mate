@@ -1,9 +1,6 @@
 package com.vlrnsnk.reimbursemate.controller;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
-import com.vlrnsnk.reimbursemate.dto.UserDTO;
-import com.vlrnsnk.reimbursemate.model.Reimbursement;
-import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/reimbursements")
 public class ReimbursementController {
 
     private final ReimbursementService reimbursementService;
-    private final UserService userService;
 
     @Autowired
     public ReimbursementController(ReimbursementService reimbursementService, UserService userService) {
         this.reimbursementService = reimbursementService;
-        this.userService = userService;
     }
 
     /**
@@ -35,15 +29,14 @@ public class ReimbursementController {
      */
     @GetMapping
     public ResponseEntity<List<ReimbursementDTO>> getAllReimbursements(@RequestParam(required = false) String status) {
-        if (status == null) {
-            List<ReimbursementDTO> reimbursements = reimbursementService.getAllReimbursements();
-
-            return ResponseEntity.ok(reimbursements);
-        }
-
         try {
-            Reimbursement.Status reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
-            List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsByStatus(reimbursementStatus);
+            List<ReimbursementDTO> reimbursements;
+
+            if (status == null) {
+                reimbursements = reimbursementService.getAllReimbursements();
+            } else {
+                reimbursements = reimbursementService.getReimbursementsByStatus(status);
+            }
 
             return ResponseEntity.ok(reimbursements);
         } catch (IllegalArgumentException e) {

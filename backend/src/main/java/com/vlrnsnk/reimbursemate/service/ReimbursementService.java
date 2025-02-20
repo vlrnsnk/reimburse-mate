@@ -1,8 +1,8 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
-import com.vlrnsnk.reimbursemate.dto.UserDTO;
 import com.vlrnsnk.reimbursemate.exception.InvalidRoleException;
+import com.vlrnsnk.reimbursemate.exception.InvalidStatusException;
 import com.vlrnsnk.reimbursemate.exception.NotFoundException;
 import com.vlrnsnk.reimbursemate.exception.ValidationException;
 import com.vlrnsnk.reimbursemate.mapper.ReimbursementMapper;
@@ -54,8 +54,16 @@ public class ReimbursementService {
      * @param status Reimbursement status
      * @return List of reimbursements with the given status
      */
-    public List<ReimbursementDTO> getReimbursementsByStatus(Reimbursement.Status status) {
-        List<Reimbursement> reimbursements = reimbursementRepository.findByStatus(status);
+    public List<ReimbursementDTO> getReimbursementsByStatus(String status) {
+        Reimbursement.Status reimbursementStatus;
+
+        try {
+            reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidStatusException("Invalid reimbursement status: " + status);
+        }
+
+        List<Reimbursement> reimbursements = reimbursementRepository.findByStatus(reimbursementStatus);
 
         return reimbursementMapper.toDTOList(reimbursements);
     }
