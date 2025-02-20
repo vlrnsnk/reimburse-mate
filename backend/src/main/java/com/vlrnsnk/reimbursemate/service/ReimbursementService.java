@@ -1,6 +1,8 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
+import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.exception.InvalidRoleException;
 import com.vlrnsnk.reimbursemate.exception.NotFoundException;
 import com.vlrnsnk.reimbursemate.exception.ValidationException;
 import com.vlrnsnk.reimbursemate.mapper.ReimbursementMapper;
@@ -9,8 +11,6 @@ import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,14 +23,16 @@ public class ReimbursementService {
 
     private final ReimbursementRepository reimbursementRepository;
     private final ReimbursementMapper reimbursementMapper;
+    private final UserService userService;
 
     @Autowired
     public ReimbursementService(
             ReimbursementRepository reimbursementRepository,
             ReimbursementMapper reimbursementMapper,
-            UserMapper userMapper) {
+            UserMapper userMapper, UserService userService) {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementMapper = reimbursementMapper;
+        this.userService = userService;
     }
 
     // TODO: change returns to Optional
@@ -144,4 +146,42 @@ public class ReimbursementService {
 
         return reimbursementMapper.toDTO(updatedReimbursement);
     }
+
+    /**
+     * Resolve a reimbursement
+     *
+     * @param reimbursementId Reimbursement id
+     * @param status Reimbursement status
+     * @param comment Comment
+     * @param approverId Approver id
+     * @return Resolved reimbursement
+     */
+    public ReimbursementDTO resolveReimbursement(Long reimbursementId, String status, String comment, Long approverId) {
+        User approver = userService.getUserEntityById(approverId)
+                .orElseThrow(() -> new NotFoundException("Approver not found"));
+
+        if (approver.getRole() != User.Role.MANAGER) {
+            throw new InvalidRoleException("Approver does not have the required role: MANAGER");
+        }
+
+        Reimbursement.Status reimbursementStatus;
+
+        try {
+            reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Invalid reimbursement status: " + status);
+        }
+
+        Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
+                .orElseThrow(() -> new NotFoundException("Reimbursement not found with ID: " + reimbursementId));
+
+        reimbursement.setStatus(reimbursementStatus);
+        reimbursement.setComment(comment);
+        reimbursement.setApprover(approver);
+
+        Reimbursement updatedReimbursement = reimbursementRepository.save(reimbursement);
+
+        return reimbursementMapper.toDTO(updatedReimbursement);
+    }
+
 }

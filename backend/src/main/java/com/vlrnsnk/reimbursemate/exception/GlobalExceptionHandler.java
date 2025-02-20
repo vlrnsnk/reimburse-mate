@@ -79,11 +79,11 @@ public class GlobalExceptionHandler {
      * @param e Exception
      * @return CustomErrorResponse
      */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CustomErrorResponse> handleException(Exception e) {
-        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<CustomErrorResponse> handleException(Exception e) {
+//        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+//
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+//    }
 
 }
