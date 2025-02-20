@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { Footer } from "../Footer/Footer";
 
 const Layout: React.FC = () => {
   return (
@@ -6,6 +7,7 @@ const Layout: React.FC = () => {
       <main className="flex flex-col flex-grow items-center justify-center p-4">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 };
