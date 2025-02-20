@@ -35,6 +35,45 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handle UserNotFoundException
+     *
+     * @param e UserNotFoundException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<CustomErrorResponse> handleUserNotFoundException(UserNotFoundException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    /**
+     * Handle InvalidRoleException
+     *
+     * @param e InvalidRoleException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<CustomErrorResponse> handleInvalidRoleException(InvalidRoleException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    /**
+     * Handle InvalidStatusException
+     *
+     * @param e InvalidStatusException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<CustomErrorResponse> handleInvalidStatusException(InvalidStatusException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    /**
      * Handle Exception
      *
      * @param e Exception
