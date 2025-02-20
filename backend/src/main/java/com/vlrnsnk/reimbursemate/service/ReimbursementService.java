@@ -1,15 +1,13 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
-import com.vlrnsnk.reimbursemate.exception.InvalidRoleException;
-import com.vlrnsnk.reimbursemate.exception.InvalidStatusException;
-import com.vlrnsnk.reimbursemate.exception.NotFoundException;
-import com.vlrnsnk.reimbursemate.exception.ValidationException;
+import com.vlrnsnk.reimbursemate.exception.*;
 import com.vlrnsnk.reimbursemate.mapper.ReimbursementMapper;
 import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
+import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,18 +22,18 @@ public class ReimbursementService {
     private final ReimbursementRepository reimbursementRepository;
     private final ReimbursementMapper reimbursementMapper;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
     public ReimbursementService(
             ReimbursementRepository reimbursementRepository,
             ReimbursementMapper reimbursementMapper,
-            UserMapper userMapper, UserService userService) {
+            UserMapper userMapper, UserService userService, UserRepository userRepository) {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementMapper = reimbursementMapper;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
-
-    // TODO: change returns to Optional
 
     /**
      * Get all reimbursements
@@ -60,7 +58,7 @@ public class ReimbursementService {
         try {
             reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InvalidStatusException("Invalid reimbursement status: " + status);
+            throw new InvalidReimbursementStatusException("Invalid reimbursement status: " + status);
         }
 
         List<Reimbursement> reimbursements = reimbursementRepository.findByStatus(reimbursementStatus);
@@ -75,6 +73,10 @@ public class ReimbursementService {
      * @return List of reimbursements with the given user id
      */
     public List<ReimbursementDTO> getReimbursementsByUserId(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException("User not found with ID: " + userId);
+        }
+
         List<Reimbursement> reimbursements = reimbursementRepository.findByUserId(userId);
 
         return reimbursementMapper.toDTOList(reimbursements);
@@ -87,10 +89,19 @@ public class ReimbursementService {
      * @param status Reimbursement status
      * @return List of reimbursements with the given user id and status
      */
-    public List<ReimbursementDTO> getReimbursementsByUserIdAndStatus(Long userId, Reimbursement.Status status) {
-        List<Reimbursement> reimbursements = reimbursementRepository.findByUserIdAndStatus(userId, status);
+    public List<ReimbursementDTO> getReimbursementsByUserIdAndStatus(Long userId, String status) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException("User not found with ID: " + userId);
+        }
 
-        return reimbursementMapper.toDTOList(reimbursements);
+        try {
+            Reimbursement.Status reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
+            List<Reimbursement> reimbursements = reimbursementRepository.findByUserIdAndStatus(userId, reimbursementStatus);
+
+            return reimbursementMapper.toDTOList(reimbursements);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidReimbursementStatusException("Invalid reimbursement status: " + status);
+        }
     }
 
     /**
@@ -106,11 +117,12 @@ public class ReimbursementService {
     /**
      * Create a new reimbursement
      *
-     * @param user User entity
+     * @param userId User ID
      * @param reimbursementDTO ReimbursementDTO
      * @return Created reimbursement
      */
-    public ReimbursementDTO createReimbursement(User user, ReimbursementDTO reimbursementDTO) {
+    public ReimbursementDTO createReimbursement(Long userId, ReimbursementDTO reimbursementDTO) {
+        User user = userService.getUserEntityById(userId);
         Reimbursement reimbursement = reimbursementMapper.toEntity(reimbursementDTO);
         reimbursement.setUser(user);
         Reimbursement createdReimbursement = reimbursementRepository.save(reimbursement);
@@ -118,36 +130,44 @@ public class ReimbursementService {
         return reimbursementMapper.toDTO(createdReimbursement);
     }
 
+    /**
+     * Update a reimbursement
+     *
+     * @param userId User ID
+     * @param reimbursementId Reimbursement ID
+     * @param updates Updates
+     * @return Updated reimbursement
+     */
     public ReimbursementDTO updateReimbursement(
             Long userId,
             Long reimbursementId,
             Map<String, String> updates
     ) {
         Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
-                .orElseThrow(() -> new NotFoundException("Reimbursement not found"));
+                .orElseThrow(() -> new ReimbursementNotFoundException("Reimbursement with ID " + reimbursementId + " not found."));
 
         if (reimbursement.getStatus() != Reimbursement.Status.PENDING || !reimbursement.getUser().getId().equals(userId)) {
-            throw new ValidationException("Reimbursement is not in a pending state or does not belong to the user");
+            throw new InvalidReimbursementStatusException("Reimbursement is not in a pending state or does not belong to the user");
         }
 
         if (updates.containsKey("amount")) {
             String newAmount = updates.get("amount");
 
-            if (newAmount != null && !newAmount.isEmpty()) {
-                reimbursement.setAmount(new BigDecimal(newAmount));
-            } else {
-                throw new ValidationException("Invalid amount provided");
+            if (newAmount == null || newAmount.isEmpty()) {
+                throw new InvalidReimbursementStatusException("Invalid amount provided");
             }
+
+            reimbursement.setAmount(new BigDecimal(newAmount));
         }
 
         if (updates.containsKey("description")) {
             String newDescription = updates.get("description");
 
-            if (newDescription != null && !newDescription.isEmpty()) {
-                reimbursement.setDescription(newDescription);
-            } else {
-                throw new ValidationException("Invalid description provided");
+            if (newDescription == null || newDescription.isEmpty()) {
+                throw new InvalidReimbursementStatusException("Invalid description provided");
             }
+
+            reimbursement.setDescription(newDescription);
         }
 
         Reimbursement updatedReimbursement = reimbursementRepository.save(reimbursement);
@@ -165,11 +185,10 @@ public class ReimbursementService {
      * @return Resolved reimbursement
      */
     public ReimbursementDTO resolveReimbursement(Long reimbursementId, String status, String comment, Long approverId) {
-        User approver = userService.getUserEntityById(approverId)
-                .orElseThrow(() -> new NotFoundException("Approver not found"));
+        User approver = userService.getUserEntityById(approverId);
 
         if (approver.getRole() != User.Role.MANAGER) {
-            throw new InvalidRoleException("Approver does not have the required role: MANAGER");
+            throw new InvalidUserRoleException("Approver does not have the required role: MANAGER");
         }
 
         Reimbursement.Status reimbursementStatus;
@@ -177,11 +196,11 @@ public class ReimbursementService {
         try {
             reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ValidationException("Invalid reimbursement status: " + status);
+            throw new InvalidReimbursementStatusException("Invalid reimbursement status: " + status);
         }
 
         Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
-                .orElseThrow(() -> new NotFoundException("Reimbursement not found with ID: " + reimbursementId));
+                .orElseThrow(() -> new ReimbursementNotFoundException("Reimbursement not found with ID: " + reimbursementId));
 
         reimbursement.setStatus(reimbursementStatus);
         reimbursement.setComment(comment);

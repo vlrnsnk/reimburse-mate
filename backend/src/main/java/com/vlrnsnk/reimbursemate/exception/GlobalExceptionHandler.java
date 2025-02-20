@@ -9,32 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * Handle NotFoundException
-     *
-     * @param e NotFoundException
-     * @return CustomErrorResponse
-     */
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<CustomErrorResponse> handleNotFoundException(NotFoundException e) {
-        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
-    /**
-     * Handle ValidationException
-     *
-     * @param e ValidationException
-     * @return CustomErrorResponse
-     */
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<CustomErrorResponse> handleValidationException(ValidationException e) {
-        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
-
-    /**
      * Handle UserNotFoundException
      *
      * @param e UserNotFoundException
@@ -53,8 +27,8 @@ public class GlobalExceptionHandler {
      * @param e InvalidRoleException
      * @return CustomErrorResponse
      */
-    @ExceptionHandler(InvalidRoleException.class)
-    public ResponseEntity<CustomErrorResponse> handleInvalidRoleException(InvalidRoleException e) {
+    @ExceptionHandler(InvalidUserRoleException.class)
+    public ResponseEntity<CustomErrorResponse> handleInvalidUserRoleException(InvalidUserRoleException e) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -66,8 +40,47 @@ public class GlobalExceptionHandler {
      * @param e InvalidStatusException
      * @return CustomErrorResponse
      */
-    @ExceptionHandler(InvalidStatusException.class)
-    public ResponseEntity<CustomErrorResponse> handleInvalidStatusException(InvalidStatusException e) {
+    @ExceptionHandler(InvalidReimbursementStatusException.class)
+    public ResponseEntity<CustomErrorResponse> handleInvalidReimbursementStatusException(InvalidReimbursementStatusException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    /**
+     * Handle UserCreationException
+     *
+     * @param e UserCreationException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(UserCreationException.class)
+    public ResponseEntity<CustomErrorResponse> handleUserCreationException(UserCreationException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    /**
+     * Handle ReimbursementNotFoundException
+     *
+     * @param e ReimbursementNotFoundException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(ReimbursementNotFoundException.class)
+    public ResponseEntity<CustomErrorResponse> handleReimbursementNotFoundException(ReimbursementNotFoundException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    /**
+     * Handle InvalidReimbursementUpdateException
+     *
+     * @param e InvalidReimbursementUpdateException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(InvalidReimbursementUpdateException.class)
+    public ResponseEntity<CustomErrorResponse> handleInvalidReimbursementUpdateException(InvalidReimbursementUpdateException e) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);

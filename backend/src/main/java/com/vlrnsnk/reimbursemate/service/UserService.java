@@ -1,6 +1,9 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.exception.InvalidUserRoleException;
+import com.vlrnsnk.reimbursemate.exception.UserCreationException;
+import com.vlrnsnk.reimbursemate.exception.UserNotFoundException;
 import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.UserRepository;
@@ -39,10 +42,10 @@ public class UserService {
      * @param userId User id
      * @return User with the given id
      */
-    public Optional<UserDTO> getUserById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-
-        return user.map(userMapper::toDTO);
+    public UserDTO getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
     }
 
     /**
@@ -51,8 +54,9 @@ public class UserService {
      * @param userId User id
      * @return User entity with the given id
      */
-    public Optional<User> getUserEntityById(Long userId) {
-        return userRepository.findById(userId);
+    public User getUserEntityById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
     }
 
     /**
@@ -62,9 +66,13 @@ public class UserService {
      * @return Created user
      */
     public UserDTO createUser(User user) {
-        User createdUser = userRepository.save(user);
+        try {
+            User createdUser = userRepository.save(user);
 
-        return userMapper.toDTO(createdUser);
+            return userMapper.toDTO(createdUser);
+        } catch (Exception e) {
+            throw new UserCreationException("Failed to create user: " + e.getMessage());
+        }
     }
 
     /**
@@ -74,44 +82,34 @@ public class UserService {
      * @param newRole New role
      * @return Updated user
      */
-    public Optional<UserDTO> updateUserRole(Long userId, String newRole) {
+    public UserDTO updateUserRole(Long userId, String newRole) {
         User.Role role;
 
         try {
             role = User.Role.valueOf(newRole);
         } catch (IllegalArgumentException e) {
-            return Optional.empty();
+            throw new InvalidUserRoleException("Invalid role: " + newRole);
         }
 
-        Optional<User> userOptional = userRepository.findById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setRole(role);
-            userRepository.save(user);
+        user.setRole(role);
+        userRepository.save(user);
 
-            return Optional.of(userMapper.toDTO(user));
-        } else {
-            return Optional.empty();
-        }
+        return userMapper.toDTO(user);
     }
 
     /**
      * Delete user
      *
      * @param userId User id
-     * @return True if user is deleted, false otherwise
      */
-    public boolean deleteUser(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
-        if (userOptional.isPresent()) {
-            userRepository.deleteById(userId);
-
-            return true;
-        }
-
-        return false;
+        userRepository.delete(user);
     }
 
 }

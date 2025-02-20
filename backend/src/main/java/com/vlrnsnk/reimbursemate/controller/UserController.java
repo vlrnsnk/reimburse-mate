@@ -47,9 +47,9 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        UserDTO userDTO = userService.getUserById(userId);
+
+        return ResponseEntity.ok(userDTO);
     }
 
     /**
@@ -75,10 +75,9 @@ public class UserController {
     @PatchMapping("/{userId}/role")
     public ResponseEntity<UserDTO> updateUserRole(@PathVariable Long userId, @RequestBody Map<String, String> request) {
         String newRole = request.get("role");
+        UserDTO updatedUser = userService.updateUserRole(userId, newRole);
 
-        return userService.updateUserRole(userId, newRole)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(updatedUser);
     }
 
     /**
@@ -89,13 +88,9 @@ public class UserController {
      */
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        boolean isUserDeleted = userService.deleteUser(userId);
+        userService.deleteUser(userId);
 
-        if (isUserDeleted) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -106,21 +101,16 @@ public class UserController {
      * @return List of reimbursements
      */
     @GetMapping("/{userId}/reimbursements")
-    public ResponseEntity<List<ReimbursementDTO>> getUserReimbursements(@PathVariable Long userId, @RequestParam(required = false) String status) {
-        if (status == null) {
-            List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsByUserId(userId);
+    public ResponseEntity<List<ReimbursementDTO>> getUserReimbursements(
+            @PathVariable Long userId,
+            @RequestParam(required = false) String status
+    ) {
+        List<ReimbursementDTO> reimbursements =
+                (status == null)
+                        ? reimbursementService.getReimbursementsByUserId(userId)
+                        : reimbursementService.getReimbursementsByUserIdAndStatus(userId, status);
 
-            return ResponseEntity.ok(reimbursements);
-        }
-
-        try {
-            Reimbursement.Status reimbursementStatus = Reimbursement.Status.valueOf(status.toUpperCase());
-            List<ReimbursementDTO> reimbursements = reimbursementService.getReimbursementsByUserIdAndStatus(userId, reimbursementStatus);
-
-            return ResponseEntity.ok(reimbursements);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(reimbursements);
     }
 
     /**
@@ -131,9 +121,11 @@ public class UserController {
      * @return Created reimbursement
      */
     @PostMapping("/{userId}/reimbursements")
-    public ResponseEntity<ReimbursementDTO> createUserReimbursement(@PathVariable Long userId, @RequestBody ReimbursementDTO reimbursementDTO) {
-        User user = userService.getUserEntityById(userId).orElse(null);
-        ReimbursementDTO createdReimbursement = reimbursementService.createReimbursement(user, reimbursementDTO);
+    public ResponseEntity<ReimbursementDTO> createUserReimbursement(
+            @PathVariable Long userId,
+            @RequestBody ReimbursementDTO reimbursementDTO
+    ) {
+        ReimbursementDTO createdReimbursement = reimbursementService.createReimbursement(userId, reimbursementDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReimbursement);
     }
