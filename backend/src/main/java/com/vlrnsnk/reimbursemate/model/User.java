@@ -58,7 +58,7 @@ public class User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.role = role != null ? role : Role.USER;
+        this.role = role != null ? role : Role.EMPLOYEE;
         this.createdAt = Objects.requireNonNullElse(createdAt, LocalDateTime.now());
         this.updatedAt = Objects.requireNonNullElse(updatedAt, LocalDateTime.now());
     }
@@ -170,7 +170,7 @@ public class User {
      * Enum for user roles
      */
     public enum Role {
-        USER,
+        EMPLOYEE,
         MANAGER,
     }
 
