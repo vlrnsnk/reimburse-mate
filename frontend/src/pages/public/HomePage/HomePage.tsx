@@ -1,8 +1,11 @@
+import { Button } from '@/components/ui/Button/Button';
+import Logo from '@/assets/logo.svg?react';
+
 const HomePage: React.FC = () => {
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-green-500 shadow-xl">ReimburseMate</h1>
-      <h2>Welcome</h2>
+      <Button to="/login">Login</Button>
+      <Button to="/register">Register</Button>
     </>
   );
 };
