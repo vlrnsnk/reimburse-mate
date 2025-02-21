@@ -23,19 +23,19 @@ const LoginPage: React.FC = () => {
         onChange={(e) => setUsername(e.target.value)}
         type="text"
         placeholder="Username"
-        required={true}
+        required
       />
       <Input
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         type="password"
         placeholder="Password"
-        required={true}
+        required
       />
       <Button
         handleClick={handleLogin}
-        className="bg-green-600 hover:bg-green-700"
         isActive={isLoginButtonActive}
+        className="bg-green-600 hover:bg-green-700"
       >
         Login
       </Button>
@@ -44,7 +44,9 @@ const LoginPage: React.FC = () => {
         <Link
           to="/register"
           className="text-blue-600 hover:text-blue-800 hover:underline active:no-underline transition-colors duration-300 ease-in-out"
-        >Register</Link>
+        >
+          Register
+        </Link>
       </p>
       <Button
         to="/"

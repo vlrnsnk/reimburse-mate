@@ -2,7 +2,7 @@ import { PageWrapperProps } from '@/interfaces/PageWrapperProps';
 
 const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-50">
+    <div className="flex flex-col items-center justify-center bg-gray-50 max-w-sm">
       <section className="bg-white p-8 rounded shadow-md text-center">
         {children}
       </section>
