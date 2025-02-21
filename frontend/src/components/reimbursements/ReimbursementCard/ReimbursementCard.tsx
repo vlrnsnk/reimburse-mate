@@ -1,4 +1,6 @@
+import { Button } from '@/components/ui/Button/Button';
 import { ReimbursementResponse } from '@/interfaces/reimbursement';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
@@ -26,19 +28,21 @@ const ReimbursementCard: React.FC<ReimbursementCardProps> = ({ reimbursement }) 
             Updated At: {new Date(updatedAt).toLocaleString()}
           </p>
         </div>
-        <div className="space-x-2">
-          <button
-            onClick={() => console.log('Edit button clicked')}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 ease-in-out"
+        <div className="flex gap-2">
+          <Button
+            handleClick={() => console.log('Edit button clicked')}
+            className="w-12 h-12 flex items-center justify-center text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-700 rounded-lg transition-colors duration-300 ease-in-out"
+            aria-label="Edit"
           >
-            Edit
-          </button>
-          <button
-            onClick={() => console.log('Delete button clicked')}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-300 ease-in-out"
+            <PencilIcon />
+          </Button>
+          <Button
+            handleClick={() => console.log('Delete button clicked')}
+            className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-700 active:bg-red-600 rounded-lg transition-colors duration-300 ease-in-out"
+            aria-label="Delete"
           >
-            Delete
-          </button>
+            <TrashIcon />
+          </Button>
         </div>
       </div>
     </div>
