@@ -8,6 +8,8 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const isLoginButtonActive = username !== '' && password !== '';
+
   const handleLogin = () => {
     console.log('Username:', username);
     console.log('Password:', password);
@@ -31,8 +33,9 @@ const LoginPage: React.FC = () => {
         required={true}
       />
       <Button
-        onClick={handleLogin}
+        handleClick={handleLogin}
         className="bg-green-600 hover:bg-green-700"
+        isActive={isLoginButtonActive}
       >
         Login
       </Button>
@@ -45,8 +48,10 @@ const LoginPage: React.FC = () => {
       </p>
       <Button
         to="/"
-        className="bg-gray-600 hover:bg-gray-700"
-      >Go back</Button>
+        // className="bg-gray-600 hover:bg-gray-700"
+      >
+        Go Home
+      </Button>
     </PageWrapper>
   );
 };

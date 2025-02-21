@@ -1,6 +1,7 @@
 export interface ButtonProps {
   children: React.ReactNode;
-  onClick?: () => void;
+  handleClick?: () => void;
   to?: string;
   className?: string;
+  isActive?: boolean;
 }
