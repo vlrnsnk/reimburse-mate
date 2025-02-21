@@ -1,4 +1,4 @@
-import { ReimbursementCard } from '@/components/reimbursements/ReimbursementCard/ReimbursementCard';
+import { ReimbursementList } from '@/components/reimbursements/ReimbursementList/ReimbursementList';
 import { ReimbursementResponse } from '@/interfaces/reimbursement';
 import { getReimbursements } from '@/services/reimbursementService';
 import { useEffect, useState } from 'react';
@@ -23,31 +23,14 @@ const ReimbursementsPage: React.FC = () => {
   return (
     <div className="text-center">
       <h1 className="text-2xl font-semibold mb-4">Reimbursements</h1>
-      <p>Here you can view and manage your reimbursements.</p>
-      {reimbursements && reimbursements.length > 0 ? (
-        <ul>
-          {reimbursements.map((reimbursement) => (
-            <li key={reimbursement.id}>
-              <ReimbursementCard reimbursement={reimbursement} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        'No reimbursements found.'
-      )}
-      {/* {reimbursements && reimbursements.length > 0 ? (
-        reimbursements.map((reimbursement) => (
-          <div key={reimbursement.id}>
-            <p>Reimbursement ID: {reimbursement.id}</p>
-            <p>Amount: {reimbursement.amount}</p>
-            <p>Description: {reimbursement.description}</p>
-            <p>Status: {reimbursement.status}</p>
-            <p>Submitted: {reimbursement.comment}</p>
-            <p>Resolved: {reimbursement.createdAt}</p>
-            <p>Resolver: {reimbursement.updatedAt}</p>
-          </div>
-        ))
-      ) : <p>No reimbursements found.</p>} */}
+      {reimbursements && reimbursements.length > 0
+        ? <ReimbursementList reimbursements={reimbursements} />
+        : (
+          <p className="text-lg text-gray-700 text-center py-4 italic">
+            No reimbursements found.
+          </p>
+        )
+      }
   </div>);
 };
 
