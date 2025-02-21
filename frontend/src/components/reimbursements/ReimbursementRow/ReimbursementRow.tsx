@@ -11,7 +11,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({ reimbursement }) =
 
   return (
     <tr className="hover:bg-gray-50 transition-colors duration-200">
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-xs">
           {description}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -34,9 +34,10 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({ reimbursement }) =
           {comment ?? 'N/A'}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          <div className="flex gap-2">
+          <div className="flex gap-4">
                    <Button
             handleClick={() => console.log('Edit button clicked')}
+            isActive={status === 'PENDING'}
             className="w-12 h-12 flex items-center justify-center text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
             aria-label="Edit"
           >
@@ -44,6 +45,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({ reimbursement }) =
           </Button>
           <Button
             handleClick={() => console.log('Delete button clicked')}
+            isActive={status === 'PENDING'}
             className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
             aria-label="Delete"
           >

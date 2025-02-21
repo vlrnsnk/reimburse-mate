@@ -64,38 +64,6 @@ const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements })
       </table>
     </div>
   );
-
-  // return (
-  //   <div className="space-y-4">
-  //     <div className="flex justify-end">
-  //       <select
-  //         value={filterStatus}
-  //         onChange={(e) => setFilterStatus(e.target.value as ReimbursementStatus)}
-  //         className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-  //       >
-  //         <option value="ALL">All</option>
-  //         <option value="PENDING">Pending</option>
-  //         <option value="APPROVED">Approved</option>
-  //         <option value="REJECTED">Rejected</option>
-  //       </select>
-  //     </div>
-  //     <div className="space-y-4">
-  //       {filteredReimbursements && filteredReimbursements.length > 0 ? (
-  //         <ul>
-  //           {filteredReimbursements.map((reimbursement) => ((
-  //             <li key={reimbursement.id}>
-  //               <ReimbursementRow reimbursement={reimbursement} />
-  //             </li>
-  //           )))}
-  //         </ul>
-  //       ) : (
-  //         <p className="text-lg text-gray-700 text-center py-4 italic">
-  //           No reimbursements found.
-  //         </p>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
 };
 
 export { ReimbursementList };
