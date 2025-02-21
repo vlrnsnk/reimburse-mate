@@ -31,14 +31,14 @@ const ReimbursementCard: React.FC<ReimbursementCardProps> = ({ reimbursement }) 
         <div className="flex gap-2">
           <Button
             handleClick={() => console.log('Edit button clicked')}
-            className="w-12 h-12 flex items-center justify-center text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-700 rounded-lg transition-colors duration-300 ease-in-out"
+            className="w-12 h-12 flex items-center justify-center text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-700"
             aria-label="Edit"
           >
             <PencilIcon />
           </Button>
           <Button
             handleClick={() => console.log('Delete button clicked')}
-            className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-700 active:bg-red-600 rounded-lg transition-colors duration-300 ease-in-out"
+            className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-700 active:bg-red-600"
             aria-label="Delete"
           >
             <TrashIcon />
