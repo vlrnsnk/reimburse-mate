@@ -6,7 +6,7 @@ const Header: React.FC = () => {
     <header className="bg-gray-50 shadow-sm">
       <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center text-center md:text-left">
         <Link to="/" className="flex flex-col sm:flex-row items-center">
-          <Logo className="h-10 w-10 text-blue-600" />
+          <Logo className="h-10 w-10 text-blue-600 hidden sm:block" />
           <span className="mt-2 sm:mt-0 sm:ml-2 text-xl font-semibold text-gray-900">
             ReimburseMate
           </span>
