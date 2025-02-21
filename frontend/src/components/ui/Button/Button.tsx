@@ -8,7 +8,7 @@ const Button: React.FC<ButtonProps> = ({
   to,
   className,
 }) => {
-  const buttonClasses = `px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 active:bg-green-600 transition-colors duration-300 ease-in-out cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-700 ${className}`;
+  const buttonClasses = `px-4 py-2 bg-blue-600 text-gray-100 rounded hover:bg-blue-700 active:bg-green-600 transition-colors duration-300 ease-in-out cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-700 ${className}`;
 
   const navigate = useNavigate();
 
