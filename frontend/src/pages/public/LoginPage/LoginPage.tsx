@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
 
   const isLoginButtonActive = username !== '' && password !== '';
 
-  const handleLogin = () => {
+  const handleLogin: () => void = () => {
     console.log('Username:', username);
     console.log('Password:', password);
   };
