@@ -26,7 +26,7 @@ const EmployeeLayout: React.FC = () => {
         </div>
       </header>
       <main className="flex flex-col flex-grow items-center px-4 py-6">
-        <div className="p-4 flex space-x-4 mb-12">
+        {/* <div className="p-4 flex space-x-4 mb-12">
           <Button
             to="/employee/dashboard"
           >
@@ -47,7 +47,7 @@ const EmployeeLayout: React.FC = () => {
           >
             Create Reimbursement
           </Button>
-        </div>
+        </div> */}
         <Outlet />
       </main>
       <Footer />

@@ -22,7 +22,7 @@ const ReimbursementsPage: React.FC = () => {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl font-semibold mb-4">Reimbursements</h1>
+      <h1 className="text-2xl font-semibold mb-12 text-gray-700">Your Reimbursements</h1>
       {reimbursements && reimbursements.length > 0
         ? <ReimbursementList reimbursements={reimbursements} />
         : (
