@@ -4,6 +4,7 @@ import { LoginPage } from '@/pages/public/LoginPage/LoginPage';
 import { NotFoundPage } from '@/pages/public/NotFoundPage/NotFoundPage';
 import { RegisterPage } from '@/pages/public/RegisterPage/RegisterPage';
 import { Layout } from '@/components/layout/Layout/Layout';
+import { EmployeeLayout } from '@/components/layout/EmployeeLayout/EmployeeLayout';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       { path: '/register', element: <RegisterPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
+  },
+  {
+    path: '/employee',
+    element: <EmployeeLayout />,
   },
 ]);
 
