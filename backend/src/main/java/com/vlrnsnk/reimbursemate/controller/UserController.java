@@ -2,7 +2,6 @@ package com.vlrnsnk.reimbursemate.controller;
 
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
-import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
