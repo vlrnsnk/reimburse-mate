@@ -48,6 +48,7 @@ const LoginPage: React.FC = () => {
       </p>
       <Button
         to="/"
+        // TODO: Check this button style
         // className="bg-gray-600 hover:bg-gray-700"
       >
         Go Home
