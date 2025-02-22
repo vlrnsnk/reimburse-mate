@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button/Button";
 interface DeleteReimbursementModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  handleDelete: () => void;
+  handleDelete: (reimbursementId: number) => void;
   reimbursementId: number;
 }
 
@@ -35,6 +35,11 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
     }
   };
 
+  const handleDeleteButtonClick = () => {
+      handleDelete(reimbursementId);
+      handleClose();
+  }
+
   if (!isOpen) {
     return null;
   }
@@ -47,15 +52,11 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-semibold mb-8">Delete Reimbursement</h2>
         <p className="text-gray-700 mb-6">
-          Are you sure you want to delete the reimbursement with ID{" "}
-          {reimbursementId}?
+          Are you sure you want to delete this reimbursement?
         </p>
         <div className="flex justify-between space-x-2">
           <Button
-            handleClick={() => {
-              handleDelete();
-              handleClose(); // Close the modal after deletion
-            }}
+            handleClick={handleDeleteButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
           >
             Delete

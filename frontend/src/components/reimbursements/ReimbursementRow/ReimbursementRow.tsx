@@ -6,7 +6,7 @@ import { EditReimbursementFormModal } from '@/components/reimbursements/EditReim
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
 import { UserRole } from '@/interfaces/UserRole';
 import { ResolveReimbursementModal } from '../ResolveReimbursementModal/ResolveReimbursementModal';
-import { resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
+import { deleteReimbursement, resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
 import toast from 'react-hot-toast';
 import { ReimbursementStatus } from '@/interfaces/ReimbursementStatus';
 
@@ -81,6 +81,21 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
     }
   };
 
+  const handleDeleteReimbursement = async (reimbursementId: number) => {
+    try {
+      const response = await deleteReimbursement(reimbursementId);
+
+      if (handleReimbursementChanged) {
+        handleReimbursementChanged();
+      }
+
+      console.log(response);
+      toast.success('Reimbursement deleted successfully!');
+    } catch (error: any) {
+      toast.error('Failed to delete reimbursement. Please try again later.');
+      console.error('Error deleting reimbursement:', error);
+    }
+  };
 
   return (
     <>
@@ -151,7 +166,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
       <DeleteReimbursementModal
         isOpen={isDeleteModalOpen}
         handleClose={() => setIsDeleteModalOpen(false)}
-        handleDelete={() => console.log("Deleted Reimbursement ID:", id)}
+        handleDelete={handleDeleteReimbursement}
         reimbursementId={id}
       />
 

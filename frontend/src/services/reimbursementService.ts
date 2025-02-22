@@ -59,7 +59,19 @@ const resolveReimbursement = async (reimbursementId: number, reimbursementResolv
 
     throw new Error('Failed to resolve reimbursement. Please try again later.');
   }
-}
+};
+
+const deleteReimbursement = async (reimbursementId: number): Promise<void> => {
+  try {
+    const response = await api.delete<void>(`/reimbursements/${reimbursementId}`);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting reimbursement:', error);
+
+    throw new Error('Failed to delete reimbursement. Please try again later.');
+  }
+};
 
 export {
   getReimbursements,
@@ -67,4 +79,5 @@ export {
   createReimbursement,
   updateReimbursement,
   resolveReimbursement,
+  deleteReimbursement,
 };
