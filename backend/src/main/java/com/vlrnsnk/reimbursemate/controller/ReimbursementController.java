@@ -67,4 +67,16 @@ public class ReimbursementController {
         return ResponseEntity.ok(reimbursementDTO);
     }
 
+    /**
+     * Delete reimbursement by id
+     *
+     * @param reimbursementId Reimbursement id
+     * @return No content if reimbursement is deleted, not found otherwise
+     */
+    @DeleteMapping("/{reimbursementId}")
+    public ResponseEntity<Void> deleteReimbursement(@PathVariable Long reimbursementId) {
+        reimbursementService.deleteReimbursement(reimbursementId);
+
+        return ResponseEntity.noContent().build();
+    }
 }
