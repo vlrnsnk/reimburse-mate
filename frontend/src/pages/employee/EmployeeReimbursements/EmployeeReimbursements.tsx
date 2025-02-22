@@ -1,4 +1,4 @@
-import { ReimbursementFormModal } from "@/components/reimbursements/ReimbursementFormModal/ReimbursementFormModal";
+import { CreateReimbursementFormModal } from '@/components/reimbursements/CreateReimbursementFormModal/CreateReimbursementFormModal';
 import { ReimbursementList } from "@/components/reimbursements/ReimbursementList/ReimbursementList";
 import { Button } from "@/components/ui/Button/Button";
 import { ReimbursementRequest, ReimbursementResponse } from "@/interfaces/reimbursement";
@@ -20,6 +20,8 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
   const [reimbursements, setReimbursements] = useState<ReimbursementResponse[]>(
     []
   );
+  const [newReimbursementAmount, setNewReimbursementAmount] = useState<number>(0);
+  const [newReimbursementDescription, setNewReimbursementDescription] = useState<string>('');
 
   const fetchData = async () => {
     try {
@@ -28,7 +30,7 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
       if (role === "MANAGER") {
         reimbursements = await getReimbursements();
       } else {
-        reimbursements = await getReimbursementsByUserId(2);
+        reimbursements = await getReimbursementsByUserId(4);
       }
 
       setReimbursements(reimbursements);
@@ -46,13 +48,15 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
   const handleSaveReimbursement = async () => {
     try {
       const payload: ReimbursementRequest = {
-        userId: 3,
-        description: "test",
-        amount: 15,
+        userId: 4,
+        description: newReimbursementDescription,
+        amount: newReimbursementAmount,
         status: "PENDING",
       };
       console.log(payload)
       const response = await createReimbursement(payload);
+      setNewReimbursementAmount(0);
+      setNewReimbursementDescription('');
       toast.success("Reimbursement created successfully!");
       console.log(response);
     } catch (error: any) {
@@ -86,11 +90,14 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
           No reimbursements found.
         </p>
       )}
-      <ReimbursementFormModal
+      <CreateReimbursementFormModal
         isOpen={isCreateModalOpen}
-        isCreating={true}
         handleClose={() => setIsCreateModalOpen(false)}
         handleSave={handleSaveReimbursement}
+        amount={newReimbursementAmount}
+        setAmount={setNewReimbursementAmount}
+        description={newReimbursementDescription}
+        setDescription={setNewReimbursementDescription}
       />
     </div>
   );
