@@ -8,7 +8,7 @@ interface ReimbursementFormModalProps {
   isCreating?: boolean;
   handleClose: () => void;
   handleSave: () => void;
-  reimbursement: ReimbursementResponse;
+  reimbursement?: ReimbursementResponse;
 }
 
 const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
@@ -23,8 +23,10 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
 
   useEffect(() => {
     if (!isCreating) {
-      setDescription(reimbursement.description);
-      setAmount(reimbursement.amount);
+      if (reimbursement) {
+        setDescription(reimbursement.description);
+        setAmount(reimbursement.amount);
+      }
     } else {
       setDescription('');
       // setAmount();
