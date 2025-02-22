@@ -8,6 +8,8 @@ import { UserLayout } from '@/components/layout/UserLayout/UserLayout';
 import { EmployeeReimbursements } from '@/pages/employee/EmployeeReimbursements/EmployeeReimbursements';
 import { LogoutPage } from '@/pages/shared/LogoutPage/LogoutPage';
 import { UserRole } from '@/interfaces/UserRole';
+import { ManagerReimbursements } from '@/pages/manager/ManagerReimbursements/ManagerReimbursements';
+import { ManagerUsers } from '@/pages/manager/ManagerUsers/ManagerUsers';
 
 const router = createBrowserRouter([
   {
@@ -34,8 +36,8 @@ const router = createBrowserRouter([
     element: <UserLayout role={UserRole.MANAGER} />,
     children: [
       { path: '', element: <Navigate to="/manager/reimbursements" /> },
-      { path: 'reimbursements', element: <EmployeeReimbursements /> },
-      { path: 'users', element: <h1>USERS MANAGING</h1> },
+      { path: 'reimbursements', element: <ManagerReimbursements /> },
+      { path: 'users', element: <ManagerUsers /> },
     ],
   },
 ]);

@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer/Footer";
 import Logo from "@/assets/logo.svg?react";
 import { UserRole } from '@/interfaces/UserRole';
+import { Button } from '@/components/ui/Button/Button';
 
 interface UserLayoutProps {
   role: UserRole;
@@ -33,6 +34,20 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
         </div>
       </header>
       <main className="flex flex-col flex-grow items-center px-4 py-6">
+        {role.role === "MANAGER" && (
+          <div className="p-4 flex space-x-4 mb-12">
+            <Button
+              to="/manager/reimbursements"
+            >
+              Manage Reimbursements
+            </Button>
+            <Button
+              to="/manager/users"
+            >
+              Manage Users
+            </Button>
+          </div>
+        )}
         <Outlet />
       </main>
       <Footer />
