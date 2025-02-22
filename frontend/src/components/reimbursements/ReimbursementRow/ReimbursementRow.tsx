@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/Button/Button";
 import { ReimbursementResponse } from "@/interfaces/reimbursement";
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, PlusIcon, TrashIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
 import { ReimbursementFormModal } from '@/components/reimbursements/ReimbursementFormModal/ReimbursementFormModal';
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
 import { UserRole } from '@/interfaces/UserRole';
+import { ResolveReimbursementModal } from '../ResolveReimbursementModal/ResolveReimbursementModal';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
@@ -20,6 +21,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -48,6 +50,15 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
           <div className="flex gap-4">
+            {role === 'MANAGER' && (
+              <Button
+                handleClick={() => setIsResolveModalOpen(true)}
+                className="w-12 h-12 flex items-center justify-center text-orange-600 hover:text-orange-100 bg-orange-100 hover:bg-orange-600 active:bg-orange-700"
+                aria-label="Resolve"
+              >
+                <CheckCircleIcon />
+              </Button>
+            )}
             <Button
               handleClick={() => setIsEditModalOpen(true)}
               isActive={status === "PENDING" || role === 'MANAGER'}
@@ -90,6 +101,18 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         reimbursement={reimbursement}
       />
 
+      <ResolveReimbursementModal
+        isOpen={isResolveModalOpen}
+        handleClose={() => setIsResolveModalOpen(false)}
+        handleResolve={() => {
+          console.log("Resolved Reimbursement ID:", id, "with status:" + "and comment:", comment);
+        }}
+        reimbursement={reimbursement}
+      />
+
+      {/*
+        // TODO: move it up and hide when another modal opened
+      */}
       <Button
         handleClick={() => setIsCreateModalOpen(true)}
         className="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"

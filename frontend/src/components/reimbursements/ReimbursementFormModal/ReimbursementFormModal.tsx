@@ -81,7 +81,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
           placeholder="Amount"
           required
         />
-        <div className="flex justify-between space-x-2">
+        <div className="flex justify-between gap-2">
           <Button
             handleClick={handleSaveButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
