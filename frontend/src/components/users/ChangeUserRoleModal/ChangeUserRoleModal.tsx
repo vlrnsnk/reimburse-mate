@@ -1,25 +1,26 @@
 import { Button } from "@/components/ui/Button/Button";
-import { UserResponse } from "@/interfaces/user";
 import { UserRole } from "@/interfaces/UserRole";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface ChangeUserRoleModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  handleChangeRole: (newRole: UserRole) => void;
-  user: UserResponse;
+  handleChangeRole: (userId: number, newRole: UserRole) => void;
+  newRole: UserRole;
+  setNewRole: (value: UserRole) => void;
+  userId: number;
 }
 
 const ChangeUserRoleModal: React.FC<ChangeUserRoleModalProps> = ({
   isOpen,
   handleClose,
   handleChangeRole,
-  user,
+  newRole,
+  setNewRole,
+  userId,
 }) => {
-  const [newRole, setNewRole] = useState<UserRole>(user.role);
-
   const handleChangeButtonClick = () => {
-    // handleChangeRole();
+    handleChangeRole(userId, newRole);
     handleClose();
   };
 
@@ -57,6 +58,7 @@ const ChangeUserRoleModal: React.FC<ChangeUserRoleModalProps> = ({
         <p className="mb-4">Select the new role for this user:</p>
         <select
           defaultValue={newRole}
+          onChange={(e) => setNewRole(e.target.value as UserRole)}
           className="w-full p-2 border border-gray-300 rounded mb-12"
         >
           <option value={UserRole.EMPLOYEE}>EMPLOYEE</option>
@@ -64,7 +66,6 @@ const ChangeUserRoleModal: React.FC<ChangeUserRoleModalProps> = ({
         </select>
         <div className="flex justify-between gap-2">
           <Button
-            //() => handleChangeRole(role === UserRole.EMPLOYEE ? UserRole.MANAGER : UserRole.EMPLOYEE)
             handleClick={handleChangeButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
           >

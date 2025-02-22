@@ -1,5 +1,6 @@
 import { UserRequest, UserResponse } from '@/interfaces/user';
 import { api } from './api';
+import { UserRole } from '@/interfaces/UserRole';
 
 const getUsers = async (): Promise<UserResponse[]> => {
   try {
@@ -20,6 +21,8 @@ const createUser = async (user: UserRequest): Promise<UserResponse> => {
     return response.data;
   } catch (error: any) {
     const errorMessage = error.response?.data?.message || 'Failed to create user. Please try again later.';
+    console.error(errorMessage);
+
     throw new Error(errorMessage);
   }
 };
@@ -31,12 +34,28 @@ const deleteUser = async (userId: number): Promise<void> => {
     return response.data;
   } catch (error: any) {
     const errorMessage = error.response?.data?.message || 'Failed to delete user. Please try again later.';
+    console.error(errorMessage);
+
     throw new Error(errorMessage);
   }
 };
+
+const updateUserRole = async (userId: number, role: UserRole): Promise<UserResponse> => {
+  try {
+    const response = await api.patch(`/users/${userId}/role`, { role });
+
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Failed to update user role. Please try again later.';
+    console.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+}
 
 export {
   getUsers,
   createUser,
   deleteUser,
+  updateUserRole,
 };

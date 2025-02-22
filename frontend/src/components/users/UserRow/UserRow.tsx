@@ -5,7 +5,7 @@ import { TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { DeleteUserModal } from '@/components/users/DeleteUserModal/DeleteUserModal';
 import { ChangeUserRoleModal } from '@/components/users/ChangeUserRoleModal/ChangeUserRoleModal';
-import { deleteUser } from '@/services/userService';
+import { deleteUser, updateUserRole } from '@/services/userService';
 import toast from 'react-hot-toast';
 
 interface UserRowProps {
@@ -19,12 +19,16 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isRoleChangeModalOpen, setIsRoleChangeModalOpen] = useState<boolean>(false);
 
+  const [newRole, setNewRole] = useState<UserRole>(user.role);
+
   const handleDeleteUser = async (userId: number) => {
     try {
       const response = await deleteUser(userId);
+
       if (handleRowDeleted) {
         handleRowDeleted();
       }
+
       toast.success('User deleted successfully!');
       console.log(response);
     } catch (error: any) {
@@ -35,8 +39,21 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleChangeRole = (newRole: UserRole) => {
-    console.log("Changed Role for User ID:", id, "to:", newRole);
+  const handleChangeRole = async (userId: number, newRole: UserRole) => {
+    try {
+      const response = await updateUserRole(userId, newRole);
+
+      if (handleRowDeleted) {
+        handleRowDeleted();
+      }
+
+      toast.success('User role updated successfully!');
+      console.log(response);
+    } catch (error: any) {
+      toast.error('Failed to update user role. Please try again later.');
+      console.error('Error updating user role:', error);
+    }
+    
     setIsRoleChangeModalOpen(false);
   };
 
@@ -94,7 +111,9 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
         isOpen={isRoleChangeModalOpen}
         handleClose={() => setIsRoleChangeModalOpen(false)}
         handleChangeRole={handleChangeRole}
-        user={user}
+        newRole={newRole}
+        setNewRole={setNewRole}
+        userId={id}
       />
     </>
   );
