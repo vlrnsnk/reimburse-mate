@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/Button/Button";
 import { ReimbursementResponse } from "@/interfaces/reimbursement";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
-import { EditReimbursementModal } from '../EditReimbursementModal/EditReimbursementModal';
-import { DeleteReimbursementModal } from '../DeleteReimbursementModal/DeleteReimbursementModal';
+import { ReimbursementFormModal } from '@/components/reimbursements/ReimbursementFormModal/ReimbursementFormModal';
+import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
@@ -64,9 +64,10 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         </td>
       </tr>
 
-      <EditReimbursementModal
+      <ReimbursementFormModal
         isOpen={isEditModalOpen}
         handleClose={() => setIsEditModalOpen(false)}
+        handleSave={() => console.log("Saved Reimbursement ID:", id)}
         reimbursement={reimbursement}
       />
 

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/Button/Button';
+import { useEffect } from "react";
+import { Button } from "@/components/ui/Button/Button";
 
 interface DeleteReimbursementModalProps {
   isOpen: boolean;
@@ -14,24 +14,23 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
   handleDelete,
   reimbursementId,
 }) => {
-
   // Close modal on ESC or click outside
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         handleClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [handleClose]);
 
   const handleClickOutside = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).classList.contains('modal-overlay')) {
+    if ((e.target as HTMLElement).classList.contains("modal-overlay")) {
       handleClose();
     }
   };
@@ -48,15 +47,10 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-semibold mb-8">Delete Reimbursement</h2>
         <p className="text-gray-700 mb-6">
-          Are you sure you want to delete the reimbursement with ID {reimbursementId}?
+          Are you sure you want to delete the reimbursement with ID{" "}
+          {reimbursementId}?
         </p>
         <div className="flex justify-between space-x-2">
-          <Button
-            handleClick={handleClose}
-            className="text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
-          >
-            Cancel
-          </Button>
           <Button
             handleClick={() => {
               handleDelete();
@@ -66,6 +60,12 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
           >
             Delete
           </Button>
+          <Button
+            handleClick={handleClose}
+            className="text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
+          >
+            Cancel
+          </Button>
         </div>
       </div>
     </div>
@@ -73,8 +73,6 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
 };
 
 export { DeleteReimbursementModal };
-
-
 
 // import React from 'react';
 
