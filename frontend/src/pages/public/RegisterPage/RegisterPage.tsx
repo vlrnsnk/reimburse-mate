@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { UserRequest } from '@/interfaces/user';
 import { UserRole } from '@/interfaces/UserRole';
-import { createUser } from '@/services/userService';
+import { registerUser } from '@/services/authService';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const RegisterPage: React.FC = () => {
     };
 
     try {
-      const response = await createUser(payload);
+      const response = await registerUser(payload);
       // TODO: clear fields
       const loadingToast = toast.loading('You are being redirected to the login page...')
       toast.success('Registration successful!');
@@ -37,10 +37,16 @@ const RegisterPage: React.FC = () => {
         toast.dismiss(loadingToast);
         navigate('/login');
       }, 3000);
+
       console.log(response);
     } catch (error: any) {
-      toast.error('Registration failed! Please try again.');
-      console.warn(error.message);
+      if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error('Registration failed. Please try again.');
+      }
+
+      console.error(error.message);
     }
   };
 
