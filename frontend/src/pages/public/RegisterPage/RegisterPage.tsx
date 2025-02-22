@@ -37,7 +37,6 @@ const RegisterPage: React.FC = () => {
         toast.dismiss(loadingToast);
         navigate('/login');
       }, 3000);
-      
       console.log(response);
     } catch (error: any) {
       toast.error('Registration failed! Please try again.');
