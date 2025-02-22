@@ -47,7 +47,8 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
           </p>
         )
       }
-  </div>);
+    </div>
+  );
 };
 
 export { EmployeeReimbursements };

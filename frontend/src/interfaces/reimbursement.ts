@@ -1,5 +1,5 @@
 /**
- * Interface for Reimbursement response object from backend
+ * Interface for Reimbursement request object to backend
  */
 export interface ReimbursementRequest {
   description: string;
@@ -9,7 +9,7 @@ export interface ReimbursementRequest {
 };
 
 /**
- * Interface for Reimbursement request object to backend
+ * Interface for Reimbursement response object from backend
  */
 export interface ReimbursementResponse {
   id: number;
