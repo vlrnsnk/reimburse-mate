@@ -24,7 +24,19 @@ const createUser = async (user: UserRequest): Promise<UserResponse> => {
   }
 };
 
+const deleteUser = async (userId: number): Promise<void> => {
+  try {
+    const response = await api.delete(`/users/${userId}`);
+
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Failed to delete user. Please try again later.';
+    throw new Error(errorMessage);
+  }
+};
+
 export {
   getUsers,
   createUser,
+  deleteUser,
 };

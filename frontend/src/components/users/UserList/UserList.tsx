@@ -5,9 +5,10 @@ import { UserRow } from '@/components/users/UserRow/UserRow';
 
 interface UserListProps {
   users: UserResponse[];
+  handleRowDeleted?: () => void;
 }
 
-const UserList: React.FC<UserListProps> = ({ users }) => {
+const UserList: React.FC<UserListProps> = ({ users, handleRowDeleted }) => {
   const [filterRole, setFilterRole] = useState<UserRole | 'ALL'>('ALL');
 
   const filteredUsers = users.filter((user) =>
@@ -50,6 +51,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
               <UserRow
                 key={user.id}
                 user={user}
+                handleRowDeleted={handleRowDeleted}
               />
             ))
           ) : (

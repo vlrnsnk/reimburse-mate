@@ -6,20 +6,24 @@ import { useEffect, useState } from 'react';
 const ManagerUsers: React.FC = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
 
+  const fetchData = async () => {
+    try {
+      const users = await getUsers();
+      setUsers(users);
+    } catch (error: any) {
+      // TODO: Add type guard
+      console.log(error.message);
+    }
+  };
+
   // TODO: Add isLoading
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const users = await getUsers();
-        setUsers(users);
-      } catch (error: any) {
-        // TODO: Add type guard
-        console.log(error.message);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const handleUserDeleted = () => {
+    fetchData();
+  };
 
   return (
     <div className="text-center">
@@ -27,6 +31,7 @@ const ManagerUsers: React.FC = () => {
       {users && users.length > 0
         ? <UserList
             users={users}
+            handleRowDeleted={handleUserDeleted}
           />
         : (
           <p className="text-lg text-gray-700 text-center py-4 italic">

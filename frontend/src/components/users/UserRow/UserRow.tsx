@@ -5,19 +5,33 @@ import { TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { DeleteUserModal } from '@/components/users/DeleteUserModal/DeleteUserModal';
 import { ChangeUserRoleModal } from '@/components/users/ChangeUserRoleModal/ChangeUserRoleModal';
+import { deleteUser } from '@/services/userService';
+import toast from 'react-hot-toast';
 
 interface UserRowProps {
   user: UserResponse;
+  handleRowDeleted?: () => void;
 }
 
-const UserRow: React.FC<UserRowProps> = ({ user }) => {
+const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
   const { id, firstName, lastName, username, role, createdAt } = user;
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isRoleChangeModalOpen, setIsRoleChangeModalOpen] = useState<boolean>(false);
 
-  const handleDeleteUser = () => {
-    console.log("Deleted User ID:", id);
+  const handleDeleteUser = async (userId: number) => {
+    try {
+      const response = await deleteUser(userId);
+      if (handleRowDeleted) {
+        handleRowDeleted();
+      }
+      toast.success('User deleted successfully!');
+      console.log(response);
+    } catch (error: any) {
+      toast.error('Failed to delete user. Please try again later.');
+      console.error('Error deleting user:', error);
+    }
+
     setIsDeleteModalOpen(false);
   };
 
@@ -72,7 +86,7 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
       <DeleteUserModal
         isOpen={isDeleteModalOpen}
         handleClose={() => setIsDeleteModalOpen(false)}
-        handleDelete={handleDeleteUser}
+        handleDeleteUser={() => handleDeleteUser(user.id)}
         userId={id}
       />
 

@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/Button/Button";
 interface DeleteUserModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  handleDelete: () => void;
+  handleDeleteUser: () => void;
   userId: number;
 }
 
 const DeleteUserModal: React.FC<DeleteUserModalProps> = ({
   isOpen,
   handleClose,
-  handleDelete,
+  handleDeleteUser,
   userId,
 }) => {
   // Close modal on ESC or click outside
@@ -35,6 +35,11 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({
     }
   };
 
+  const handleDeleteButtonClick = () => {
+    handleDeleteUser();
+    handleClose();
+  }
+
   if (!isOpen) {
     return null;
   }
@@ -52,10 +57,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({
         </p>
         <div className="flex justify-between space-x-2">
           <Button
-            handleClick={() => {
-              handleDelete();
-              handleClose();
-            }}
+            handleClick={handleDeleteButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
           >
             Delete
