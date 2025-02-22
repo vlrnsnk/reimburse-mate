@@ -3,6 +3,7 @@ import { ReimbursementResponse } from "@/interfaces/reimbursement";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
 import { EditReimbursementModal } from '../EditReimbursementModal/EditReimbursementModal';
+import { DeleteReimbursementModal } from '../DeleteReimbursementModal/DeleteReimbursementModal';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
@@ -11,9 +12,10 @@ interface ReimbursementCardProps {
 const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
   reimbursement,
 }) => {
-  const { description, amount, status, comment } = reimbursement;
+  const { id, description, amount, status, comment } = reimbursement;
 
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -51,7 +53,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
               <PencilIcon />
             </Button>
             <Button
-              handleClick={() => console.log("Delete button clicked")}
+              handleClick={() => setIsDeleteModalOpen(true)}
               isActive={status === "PENDING"}
               className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
               aria-label="Delete"
@@ -66,6 +68,13 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         isOpen={isEditModalOpen}
         handleClose={() => setIsEditModalOpen(false)}
         reimbursement={reimbursement}
+      />
+
+      <DeleteReimbursementModal
+        isOpen={isDeleteModalOpen}
+        handleClose={() => setIsDeleteModalOpen(false)}
+        handleDelete={() => console.log("Deleted Reimbursement ID:", id)}
+        reimbursementId={id}
       />
     </>
   );
