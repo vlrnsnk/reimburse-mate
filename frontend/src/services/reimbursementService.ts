@@ -7,4 +7,13 @@ const getReimbursements = async (): Promise<ReimbursementResponse[]> => {
   return response.data;
 };
 
-export { getReimbursements };
+const getReimbursementsByUserId = async (userId: number): Promise<ReimbursementResponse[]> => {
+  const response = await api.get(`/users/${userId}/reimbursements`);
+
+  return response.data;
+}
+
+export {
+  getReimbursements,
+  getReimbursementsByUserId,
+};

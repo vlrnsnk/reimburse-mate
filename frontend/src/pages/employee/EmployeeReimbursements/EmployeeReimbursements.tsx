@@ -1,6 +1,6 @@
 import { ReimbursementList } from '@/components/reimbursements/ReimbursementList/ReimbursementList';
 import { ReimbursementResponse } from '@/interfaces/reimbursement';
-import { getReimbursements } from '@/services/reimbursementService';
+import { getReimbursementsByUserId } from '@/services/reimbursementService';
 import { useEffect, useState } from 'react';
 
 const EmployeeReimbursements: React.FC = () => {
@@ -9,7 +9,10 @@ const EmployeeReimbursements: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reimbursements: ReimbursementResponse[] = await getReimbursements();
+        const reimbursements: ReimbursementResponse[] = await
+        getReimbursementsByUserId(1);
+        // TODO: delete hardcode
+        console.log(reimbursements);
         setReimbursements(reimbursements);
       } catch (error: any) {
         // TODO: Add type guard
