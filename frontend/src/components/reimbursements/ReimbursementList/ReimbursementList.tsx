@@ -37,7 +37,7 @@ const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements })
                 <option value="ALL">STATUS</option>
                 <option value="PENDING">PENDING</option>
                 <option value="APPROVED">APPROVED</option>
-                <option value="DENIED">DENIED</option>
+                <option value="REJECTED">REJECTED</option>
               </select>
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
