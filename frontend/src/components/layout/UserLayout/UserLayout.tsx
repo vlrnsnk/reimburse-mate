@@ -1,8 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer/Footer";
 import Logo from "@/assets/logo.svg?react";
+import { UserRole } from '@/interfaces/UserRole';
 
-const EmployeeLayout: React.FC = () => {
+interface UserLayoutProps {
+  role: UserRole;
+};
+
+const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-gray-50 shadow-sm">
@@ -14,6 +19,9 @@ const EmployeeLayout: React.FC = () => {
             </span>
           </Link>
           <nav className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+            <span className="mt-2 sm:mt-0 sm:ml-2 text-md text-gray-900">
+              Hello, <span className="italic text-blue-600">{role.role}</span>
+            </span>
             <Link
               to="/logout"
               className="text-gray-800 hover:text-gray-900 active:text-blue-600 transition-colors duration-300 ease-in-out"
@@ -32,4 +40,4 @@ const EmployeeLayout: React.FC = () => {
   );
 };
 
-export { EmployeeLayout };
+export { UserLayout };
