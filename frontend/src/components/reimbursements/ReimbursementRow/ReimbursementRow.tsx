@@ -40,7 +40,11 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
 
     try {
       const response = await updateReimbursement(reimbursement.id, payload);
-      handleReimbursementChanged();
+
+      if (handleReimbursementChanged) {
+        handleReimbursementChanged();
+      }
+
       toast.success("Reimbursement updated successfully!");
       console.log(response);
     } catch (error: any) {
