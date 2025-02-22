@@ -46,14 +46,15 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
   }, []);
 
   const handleSaveReimbursement = async () => {
+    const payload: ReimbursementRequest = {
+      userId: 4,
+      description: newReimbursementDescription,
+      amount: newReimbursementAmount,
+      status: "PENDING",
+    };
+    console.log(payload);
+
     try {
-      const payload: ReimbursementRequest = {
-        userId: 4,
-        description: newReimbursementDescription,
-        amount: newReimbursementAmount,
-        status: "PENDING",
-      };
-      console.log(payload)
       const response = await createReimbursement(payload);
       setNewReimbursementAmount(0);
       setNewReimbursementDescription('');
@@ -65,6 +66,10 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
     }
 
     fetchData();
+  };
+
+  const handleReimbursementChanged = async () => {
+    await fetchData();
   };
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
@@ -80,11 +85,15 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
           className="rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
           aria-label="Add Reimbursement"
         >
-          <PlusIcon className="w-6 h-6 pr-2" /> Create New Reimbursement
+          <PlusIcon className="w-6 h-6 pr-2" />Create New Reimbursement
         </Button>
       </div>
       {reimbursements && reimbursements.length > 0 ? (
-        <ReimbursementList reimbursements={reimbursements} role={role} />
+        <ReimbursementList
+          reimbursements={reimbursements}
+          role={role}
+          handleReimbursementChanged={handleReimbursementChanged}
+        />
       ) : (
         <p className="text-lg text-gray-700 text-center py-4 italic">
           No reimbursements found.

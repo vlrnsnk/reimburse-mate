@@ -37,8 +37,21 @@ const createReimbursement = async (reimbursementRequest: ReimbursementRequest): 
   }
 };
 
+const updateReimbursement = async (reimbursementId: number, reimbursementRequest: ReimbursementRequest): Promise<ReimbursementResponse> => {
+  try {
+    const response = await api.patch<ReimbursementResponse>(`/users/${reimbursementRequest.userId}/reimbursements/${reimbursementId}`, reimbursementRequest);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error updating reimbursement:', error);
+
+    throw new Error('Failed to update reimbursement. Please try again later.');
+  }
+};
+
 export {
   getReimbursements,
   getReimbursementsByUserId,
   createReimbursement,
+  updateReimbursement,
 };

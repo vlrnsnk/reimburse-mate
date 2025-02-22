@@ -1,37 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
-import { ReimbursementResponse } from '@/interfaces/reimbursement';
 
-interface ReimbursementFormModalProps {
+interface EditReimbursementFormModalProps {
   isOpen: boolean;
-  isCreating?: boolean;
   handleClose: () => void;
   handleSave: () => void;
-  reimbursement?: ReimbursementResponse;
+  amount: number,
+  setAmount: (value: number) => void,
+  description: string,
+  setDescription: (value: string) => void,
 }
 
-const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
+const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
   isOpen,
-  isCreating = false,
   handleClose,
   handleSave,
-  reimbursement,
+  amount,
+  setAmount,
+  description,
+  setDescription,
 }) => {
-  const [description, setDescription] = useState<string>('');
-  const [amount, setAmount] = useState<number>();
-
-  useEffect(() => {
-    if (!isCreating) {
-      if (reimbursement) {
-        setDescription(reimbursement.description);
-        setAmount(reimbursement.amount);
-      }
-    } else {
-      setDescription('');
-      // setAmount();
-    }
-  }, [isCreating, reimbursement]);
 
   const handleSaveButtonClick = () => {
     handleSave();
@@ -68,7 +57,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
       onClick={handleClickOutside}
     >
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-8">{isCreating ? 'Create' : 'Edit'} Reimbursement</h2>
+        <h2 className="text-xl font-semibold mb-8">Edit Reimbursement</h2>
         <Input
           type="text"
           value={description}
@@ -87,9 +76,9 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
           <Button
             handleClick={handleSaveButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
-            isActive={description.length > 0 && amount !== undefined}
+            isActive={description.length > 0 && amount !== undefined && amount > 0}
           >
-            {isCreating ? 'Create' : 'Save'}
+            Save
           </Button>
           <Button
             handleClick={handleClose}
@@ -103,4 +92,4 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
   );
 };
 
-export { ReimbursementFormModal };
+export { EditReimbursementFormModal };

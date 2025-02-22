@@ -7,9 +7,10 @@ import { UserRole } from '@/interfaces/UserRole';
 interface ReimbursementListProps {
   reimbursements: ReimbursementResponse[];
   role?: UserRole;
+  handleReimbursementChanged?: () => void;
 };
 
-const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements, role }) => {
+const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements, role, handleReimbursementChanged }) => {
   const [filterStatus, setFilterStatus] = useState<ReimbursementStatus>('ALL');
 
   const filteredReimbursements = reimbursements.filter((reimbursement) =>
@@ -56,6 +57,7 @@ const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements, r
                 key={reimbursement.id}
                 reimbursement={reimbursement}
                 role={role}
+                handleReimbursementChanged={handleReimbursementChanged}
               />
             ))
           ) : (
