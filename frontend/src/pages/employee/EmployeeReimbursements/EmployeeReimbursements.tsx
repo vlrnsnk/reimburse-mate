@@ -23,7 +23,6 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
           reimbursements = await getReimbursementsByUserId(1);
         }
 
-        console.log(reimbursements);
         setReimbursements(reimbursements);
       } catch (error: any) {
         // TODO: Add type guard

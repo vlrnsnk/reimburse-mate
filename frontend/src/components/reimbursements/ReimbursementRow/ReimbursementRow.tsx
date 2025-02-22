@@ -23,6 +23,8 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
 
+  const isAnyModalOpened = isEditModalOpen || isDeleteModalOpen || isCreateModalOpen || isResolveModalOpen;
+
   return (
     <>
       <tr className="hover:bg-gray-50 transition-colors duration-200">
@@ -113,13 +115,14 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
       {/*
         // TODO: move it up and hide when another modal opened
       */}
-      <Button
+      {!isAnyModalOpened ? (<Button
         handleClick={() => setIsCreateModalOpen(true)}
         className="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
         aria-label="Add Reimbursement"
       >
         <PlusIcon className="w-6 h-6" />
-      </Button>
+      </Button>) : null
+      }
     </>
   );
 };

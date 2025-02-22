@@ -10,7 +10,6 @@ interface ReimbursementListProps {
 };
 
 const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements, role }) => {
-  console.log(JSON.stringify(reimbursements, null, 2));
   const [filterStatus, setFilterStatus] = useState<ReimbursementStatus>('ALL');
 
   const filteredReimbursements = reimbursements.filter((reimbursement) =>
