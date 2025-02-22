@@ -35,7 +35,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
       </header>
       <main className="flex flex-col flex-grow items-center px-4 py-6">
         {role.role === "MANAGER" && (
-          <div className="p-4 flex space-x-4 mb-12">
+          <div className="p-4 flex space-x-4 mb-4">
             <Button
               to="/manager/reimbursements"
             >

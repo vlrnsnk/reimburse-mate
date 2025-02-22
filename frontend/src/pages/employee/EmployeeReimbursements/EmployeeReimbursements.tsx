@@ -40,7 +40,16 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl font-semibold mb-12 text-gray-700">{role === 'MANAGER' ? 'Manage' : 'Your'} Reimbursements</h1>
+      <h1 className="text-2xl font-semibold mb-8 text-gray-700">{role === 'MANAGER' ? 'Manage' : 'Your'} Reimbursements</h1>
+      <div className="flex justify-center mb-8">
+      <Button
+        handleClick={() => setIsCreateModalOpen(true)}
+        className="rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
+        aria-label="Add Reimbursement"
+      >
+        <PlusIcon className="w-6 h-6 pr-2" /> Create New Reimbursement
+      </Button>
+      </div>
       {reimbursements && reimbursements.length > 0
         ? <ReimbursementList
             reimbursements={reimbursements}
@@ -51,22 +60,17 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({ role }) => {
           <p className="text-lg text-gray-700 text-center py-4 italic">
             No reimbursements found.
           </p>
-                <ReimbursementFormModal
+
+          </>
+        )
+      }
+      <ReimbursementFormModal
                 isOpen={isCreateModalOpen}
                 isCreating={true}
                 handleClose={() => setIsCreateModalOpen(false)}
                 handleSave={() => console.log("Created new Reimbursement")}
               />
-              <Button
-        handleClick={() => setIsCreateModalOpen(true)}
-        className="rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
-        aria-label="Add Reimbursement"
-      >
-        <PlusIcon className="w-6 h-6 pr-2" /> Create New Reimbursement
-      </Button>
-          </>
-        )
-      }
+
     </div>
   );
 };

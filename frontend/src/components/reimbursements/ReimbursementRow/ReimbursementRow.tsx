@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button/Button";
 import { ReimbursementResponse } from "@/interfaces/reimbursement";
-import { PencilIcon, PlusIcon, TrashIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
 import { ReimbursementFormModal } from '@/components/reimbursements/ReimbursementFormModal/ReimbursementFormModal';
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
@@ -20,10 +20,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
 
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
-
-  const isAnyModalOpened = isEditModalOpen || isDeleteModalOpen || isCreateModalOpen || isResolveModalOpen;
 
   return (
     <>
@@ -95,14 +92,6 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         reimbursementId={id}
       />
 
-      <ReimbursementFormModal
-        isOpen={isCreateModalOpen}
-        isCreating={true}
-        handleClose={() => setIsCreateModalOpen(false)}
-        handleSave={() => console.log("Created new Reimbursement")}
-        reimbursement={reimbursement}
-      />
-
       <ResolveReimbursementModal
         isOpen={isResolveModalOpen}
         handleClose={() => setIsResolveModalOpen(false)}
@@ -111,18 +100,6 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         }}
         reimbursement={reimbursement}
       />
-
-      {/*
-        // TODO: move it up and hide when another modal opened
-      */}
-      {!isAnyModalOpened ? (<Button
-        handleClick={() => setIsCreateModalOpen(true)}
-        className="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
-        aria-label="Add Reimbursement"
-      >
-        <PlusIcon className="w-6 h-6" />
-      </Button>) : null
-      }
     </>
   );
 };
