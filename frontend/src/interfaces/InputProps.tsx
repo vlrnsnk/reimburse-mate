@@ -1,5 +1,5 @@
 export interface InputProps {
-  value: string | number;
+  value: string | number | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type: string;
   placeholder: string;

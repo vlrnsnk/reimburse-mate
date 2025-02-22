@@ -3,7 +3,7 @@ import { ReimbursementResponse } from '@/interfaces/reimbursement';
 import { getReimbursements } from '@/services/reimbursementService';
 import { useEffect, useState } from 'react';
 
-const ReimbursementsPage: React.FC = () => {
+const EmployeeReimbursements: React.FC = () => {
   const [reimbursements, setReimbursements] = useState<ReimbursementResponse[]>([]);
 
   useEffect(() => {
@@ -34,4 +34,4 @@ const ReimbursementsPage: React.FC = () => {
   </div>);
 };
 
-export { ReimbursementsPage };
+export { EmployeeReimbursements };

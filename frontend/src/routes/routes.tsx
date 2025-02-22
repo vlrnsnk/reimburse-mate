@@ -5,7 +5,7 @@ import { NotFoundPage } from '@/pages/public/NotFoundPage/NotFoundPage';
 import { RegisterPage } from '@/pages/public/RegisterPage/RegisterPage';
 import { Layout } from '@/components/layout/Layout/Layout';
 import { UserLayout } from '@/components/layout/UserLayout/UserLayout';
-import { ReimbursementsPage } from '@/pages/employee/ReimbursementsPage/ReimbursementsPage';
+import { EmployeeReimbursements } from '@/pages/employee/EmployeeReimbursements/EmployeeReimbursements';
 import { LogoutPage } from '@/pages/shared/LogoutPage/LogoutPage';
 import { UserRole } from '@/interfaces/UserRole';
 
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     element: <UserLayout role={UserRole.EMPLOYEE} />,
     children: [
       { path: '', element: <Navigate to="/employee/reimbursements" /> },
-      { path: 'reimbursements', element: <ReimbursementsPage /> },
+      { path: 'reimbursements', element: <EmployeeReimbursements /> },
     ],
   },
   {
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
     element: <UserLayout role={UserRole.MANAGER} />,
     children: [
       { path: '', element: <Navigate to="/manager/reimbursements" /> },
-      { path: 'reimbursements', element: <ReimbursementsPage /> },
+      { path: 'reimbursements', element: <EmployeeReimbursements /> },
       { path: 'users', element: <h1>USERS MANAGING</h1> },
     ],
   },

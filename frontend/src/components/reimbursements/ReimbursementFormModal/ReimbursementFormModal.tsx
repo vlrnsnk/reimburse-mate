@@ -19,7 +19,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
   reimbursement,
 }) => {
   const [description, setDescription] = useState<string>('');
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>();
 
   useEffect(() => {
     if (!isCreating) {
@@ -27,7 +27,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
       setAmount(reimbursement.amount);
     } else {
       setDescription('');
-      setAmount(0);
+      // setAmount();
     }
   }, [isCreating, reimbursement]);
 
@@ -85,7 +85,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
           <Button
             handleClick={handleSaveButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
-            isActive={description.length > 0 && amount > 0}
+            isActive={description.length > 0 && amount !== undefined}
           >
             {isCreating ? 'Create' : 'Save'}
           </Button>
