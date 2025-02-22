@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/Button/Button";
-import { ReimbursementRequest, ReimbursementResponse } from "@/interfaces/reimbursement";
+import { ReimbursementRequest, ReimbursementResolveRequest, ReimbursementResponse } from "@/interfaces/reimbursement";
 import { PencilIcon, TrashIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
 import { EditReimbursementFormModal } from '@/components/reimbursements/EditReimbursementFormModal/EditReimbursementFormModal';
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
 import { UserRole } from '@/interfaces/UserRole';
 import { ResolveReimbursementModal } from '../ResolveReimbursementModal/ResolveReimbursementModal';
-import { updateReimbursement } from '@/services/reimbursementService';
+import { resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
 import toast from 'react-hot-toast';
+import { ReimbursementStatus } from '@/interfaces/ReimbursementStatus';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
@@ -28,6 +29,9 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
 
   const [newReimbursementAmount, setNewReimbursementAmount] = useState<number>(amount);
   const [newReimbursementDescription, setNewReimbursementDescription] = useState<string>(description);
+
+  const [newStatus, setNewStatus] = useState<ReimbursementStatus>(status);
+  const [newComment, setNewComment] = useState<string | null>(comment);
 
   const handleEditReimbursement = async () => {
     const payload: ReimbursementRequest = {
@@ -50,6 +54,30 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
     } catch (error: any) {
       toast.error("Failed to update reimbursement. Please try again later.");
       console.error("Error updating reimbursement:", error);
+    }
+  };
+
+  const handleResolveReimbursement = async () => {
+    const payload: ReimbursementResolveRequest = {
+      status: newStatus,
+      comment: newComment,
+      approverId: 1,
+    };
+
+    console.log(payload);
+
+    try {
+      const response = await resolveReimbursement(reimbursement.id, payload);
+
+      if (handleReimbursementChanged) {
+        handleReimbursementChanged();
+      }
+
+      toast.success("Reimbursement resolved successfully!");
+      console.log(response);
+    } catch (error: any) {
+      toast.error("Failed to resolve reimbursement. Please try again later.");
+      console.error("Error resolving reimbursement:", error);
     }
   };
 
@@ -130,10 +158,11 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
       <ResolveReimbursementModal
         isOpen={isResolveModalOpen}
         handleClose={() => setIsResolveModalOpen(false)}
-        handleResolve={() => {
-          console.log("Resolved Reimbursement ID:", id, "with status:" + "and comment:", comment);
-        }}
-        reimbursement={reimbursement}
+        handleResolve={handleResolveReimbursement}
+        newStatus={newStatus}
+        setNewStatus={setNewStatus}
+        newComment={newComment}
+        setNewComment={setNewComment}
       />
     </>
   );

@@ -1,24 +1,26 @@
 import { Button } from '@/components/ui/Button/Button';
-import { ReimbursementResponse } from '@/interfaces/reimbursement';
 import { ReimbursementStatus } from '@/interfaces/ReimbursementStatus';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface ResolveReimbursementModalProps {
   isOpen: boolean;
   handleClose: () => void;
   handleResolve: () => void;
-  reimbursement: ReimbursementResponse;
+  newStatus: ReimbursementStatus;
+  setNewStatus: (value: ReimbursementStatus) => void;
+  newComment: string | null;
+  setNewComment: (value: string | null) => void;
 };
 
 const ResolveReimbursementModal: React.FC<ResolveReimbursementModalProps> = ({
   isOpen,
   handleClose,
   handleResolve,
-  reimbursement,
+  newStatus,
+  setNewStatus,
+  newComment,
+  setNewComment,
 }) => {
-  const [newStatus, setNewStatus] = useState<ReimbursementStatus>('ALL');
-  const [comment, setComment] = useState<string | null>(reimbursement.comment);
-
   const handleResolveButtonClick = () => {
     handleResolve();
     handleClose();
@@ -61,12 +63,13 @@ const ResolveReimbursementModal: React.FC<ResolveReimbursementModalProps> = ({
           className="w-full p-2 border border-gray-300 rounded mb-4"
         >
           <option value="ALL">Select Status</option>
+          <option value="PENDING">Pending</option>
           <option value="APPROVED">Approved</option>
           <option value="REJECTED">Rejected</option>
         </select>
         <textarea
-          value={comment ?? ''}
-          onChange={(e) => setComment(e.target.value)}
+          value={newComment ?? ''}
+          onChange={(e) => setNewComment(e.target.value)}
           placeholder="Add a comment..."
           className="w-full p-2 border border-gray-300 rounded mb-4 resize-none"
           rows={4}
@@ -75,7 +78,7 @@ const ResolveReimbursementModal: React.FC<ResolveReimbursementModalProps> = ({
           <Button
             handleClick={handleResolveButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
-            isActive={comment !== null && newStatus !== 'ALL'}
+            isActive={newComment !== null && newStatus !== 'ALL'}
           >
             Resolve
           </Button>

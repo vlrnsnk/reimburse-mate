@@ -1,11 +1,19 @@
+import { ReimbursementStatus } from './ReimbursementStatus';
+
 /**
  * Interface for Reimbursement request object to backend
  */
 export interface ReimbursementRequest {
   description: string;
   amount: number;
-  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  status: ReimbursementStatus;
   userId: number;
+};
+
+export interface ReimbursementResolveRequest {
+  status: ReimbursementStatus;
+  comment: string | null;
+  approverId: number;
 };
 
 /**

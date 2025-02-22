@@ -1,4 +1,4 @@
-import { ReimbursementResponse, ReimbursementRequest } from '@/interfaces/reimbursement';
+import { ReimbursementResponse, ReimbursementRequest, ReimbursementResolveRequest } from '@/interfaces/reimbursement';
 import { api } from './api';
 
 const getReimbursements = async (): Promise<ReimbursementResponse[]> => {
@@ -49,9 +49,22 @@ const updateReimbursement = async (reimbursementId: number, reimbursementRequest
   }
 };
 
+const resolveReimbursement = async (reimbursementId: number, reimbursementResolveRequest: ReimbursementResolveRequest): Promise<ReimbursementResponse> => {
+  try {
+    const response = await api.patch<ReimbursementResponse>(`/reimbursements/${reimbursementId}`, reimbursementResolveRequest);
+
+    return response.data;
+  } catch (error) {
+    console.error('Error resolving reimbursement:', error);
+
+    throw new Error('Failed to resolve reimbursement. Please try again later.');
+  }
+}
+
 export {
   getReimbursements,
   getReimbursementsByUserId,
   createReimbursement,
   updateReimbursement,
+  resolveReimbursement,
 };
