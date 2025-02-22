@@ -4,13 +4,16 @@ import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
 import { ReimbursementFormModal } from '@/components/reimbursements/ReimbursementFormModal/ReimbursementFormModal';
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
+import { UserRole } from '@/interfaces/UserRole';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
+  role?: UserRole;
 }
 
 const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
   reimbursement,
+  role,
 }) => {
   const { id, description, amount, status, comment } = reimbursement;
 
@@ -47,7 +50,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
           <div className="flex gap-4">
             <Button
               handleClick={() => setIsEditModalOpen(true)}
-              isActive={status === "PENDING"}
+              isActive={status === "PENDING" || role === 'MANAGER'}
               className="w-12 h-12 flex items-center justify-center text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
               aria-label="Edit"
             >
@@ -55,7 +58,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
             </Button>
             <Button
               handleClick={() => setIsDeleteModalOpen(true)}
-              isActive={status === "PENDING"}
+              isActive={status === "PENDING" || role === 'MANAGER'}
               className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
               aria-label="Delete"
             >

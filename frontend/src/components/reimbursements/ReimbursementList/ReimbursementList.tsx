@@ -2,12 +2,14 @@ import { ReimbursementResponse } from '@/interfaces/reimbursement';
 import { ReimbursementRow } from '../ReimbursementRow/ReimbursementRow';
 import { useState } from 'react';
 import { ReimbursementStatus } from '@/interfaces/ReimbursementStatus';
+import { UserRole } from '@/interfaces/UserRole';
 
 interface ReimbursementListProps {
   reimbursements: ReimbursementResponse[];
+  role?: UserRole;
 };
 
-const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements }) => {
+const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements, role }) => {
   console.log(JSON.stringify(reimbursements, null, 2));
   const [filterStatus, setFilterStatus] = useState<ReimbursementStatus>('ALL');
 
@@ -51,7 +53,11 @@ const ReimbursementList: React.FC<ReimbursementListProps> = ({ reimbursements })
         <tbody className="divide-y divide-gray-200">
           {filteredReimbursements.length > 0 ? (
             filteredReimbursements.map((reimbursement) => (
-              <ReimbursementRow key={reimbursement.id} reimbursement={reimbursement} />
+              <ReimbursementRow
+                key={reimbursement.id}
+                reimbursement={reimbursement}
+                role={role}
+              />
             ))
           ) : (
             <tr>
