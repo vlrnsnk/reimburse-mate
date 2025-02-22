@@ -11,7 +11,6 @@ const ManagerUsers: React.FC = () => {
     const fetchData = async () => {
       try {
         const users = await getUsers();
-console.log(users);
         setUsers(users);
       } catch (error: any) {
         // TODO: Add type guard
