@@ -9,6 +9,7 @@ import { EmployeeDashboardPage } from '@/pages/employee/EmployeeDashboard/Employ
 import { ReimbursementsPage } from '@/pages/employee/ReimbursementsPage/ReimbursementsPage';
 import { PendingReimbursementsPage } from '@/pages/employee/PendingReimbursementsPage/PendingReimbursementsPage';
 import { CreateReimbursementPage } from '@/pages/employee/CreateReimbursementPage/CreateReimbursementPage';
+import { LogoutPage } from '@/pages/shared/LogoutPage/LogoutPage';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
+      { path: '/logout', element: <LogoutPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

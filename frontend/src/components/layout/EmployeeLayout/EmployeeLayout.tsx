@@ -15,7 +15,7 @@ const EmployeeLayout: React.FC = () => {
           </Link>
           <nav className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <Link
-              to="/login"
+              to="/logout"
               className="text-gray-800 hover:text-gray-900 active:text-blue-600 transition-colors duration-300 ease-in-out"
               aria-label="Logout Page"
             >
