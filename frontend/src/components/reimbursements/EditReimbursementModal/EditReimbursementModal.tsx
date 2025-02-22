@@ -71,6 +71,7 @@ const EditReimbursementModal: React.FC<EditReimbursementModalProps> = ({
           <Button
             handleClick={handleSaveButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
+            isActive={description.length > 0 && amount > 0}
           >
             Save
           </Button>
