@@ -18,8 +18,18 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
   handleSave,
   reimbursement,
 }) => {
-  const [description, setDescription] = useState<string>(reimbursement.description);
-  const [amount, setAmount] = useState<number>(reimbursement.amount);
+  const [description, setDescription] = useState<string>('');
+  const [amount, setAmount] = useState<number>(0);
+
+  useEffect(() => {
+    if (!isCreating) {
+      setDescription(reimbursement.description);
+      setAmount(reimbursement.amount);
+    } else {
+      setDescription('');
+      setAmount(0);
+    }
+  }, [isCreating, reimbursement]);
 
   const handleSaveButtonClick = () => {
     handleSave();
@@ -56,7 +66,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
       onClick={handleClickOutside}
     >
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-8">{isCreating ? 'Create' : 'Update'} Reimbursement</h2>
+        <h2 className="text-xl font-semibold mb-8">{isCreating ? 'Create' : 'Edit'} Reimbursement</h2>
         <Input
           type="text"
           value={description}
@@ -77,7 +87,7 @@ const ReimbursementFormModal: React.FC<ReimbursementFormModalProps> = ({
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
             isActive={description.length > 0 && amount > 0}
           >
-            {isCreating ? 'Create' : 'Update'}
+            {isCreating ? 'Create' : 'Save'}
           </Button>
           <Button
             handleClick={handleClose}
