@@ -1,8 +1,10 @@
 package com.vlrnsnk.reimbursemate.controller;
 
+import com.vlrnsnk.reimbursemate.dto.LoginRequestDTO;
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.AuthService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,4 +35,10 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> loginUser(@RequestBody LoginRequestDTO loginRequestDTO, HttpSession session) {
+        UserDTO loggedInUser = authService.loginUser(loginRequestDTO, session);
+
+        return ResponseEntity.ok(loggedInUser);
+    }
 }

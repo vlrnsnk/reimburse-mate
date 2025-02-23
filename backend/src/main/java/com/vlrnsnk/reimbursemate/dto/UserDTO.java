@@ -11,6 +11,17 @@ public class UserDTO {
     private final String createdAt;
     private final String updatedAt;
 
+    /**
+     * Constructor for sending User response without password
+     *
+     * @param id        User ID
+     * @param firstName User first name
+     * @param lastName  User last name
+     * @param username  User username
+     * @param role      User role
+     * @param createdAt User creation date
+     * @param updatedAt User update date
+     */
     public UserDTO(
             Long id,
             String firstName,
