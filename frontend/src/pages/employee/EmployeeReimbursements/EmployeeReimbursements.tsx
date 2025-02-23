@@ -32,7 +32,11 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
   const [newReimbursementDescription, setNewReimbursementDescription] =
     useState<string>("");
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const fetchData = async () => {
+    setIsLoading(true);
+
     try {
       const userId: number = localStorage.getItem("userId") as unknown as number;
 
@@ -45,10 +49,11 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
     } catch (error: any) {
       // TODO: Add type guard
       console.log(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // TODO: Add isLoading
   useEffect(() => {
     fetchData();
   }, [isPersonal]);
@@ -98,7 +103,9 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
         </Button>
         )}
       </div>
-      {reimbursements && reimbursements.length > 0 ? (
+      {!isLoading ? (
+        <div className="loading-spinner">Loading...</div>
+      ) : reimbursements && reimbursements.length > 0 ? (
         <ReimbursementList
           reimbursements={reimbursements}
           role={role}

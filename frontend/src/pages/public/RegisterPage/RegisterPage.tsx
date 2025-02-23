@@ -29,7 +29,7 @@ const RegisterPage: React.FC = () => {
 
     try {
       const response = await registerUser(payload);
-      // TODO: clear fields
+
       const loadingToast = toast.loading('You are being redirected to the login page...');
       toast.success('Registration successful!');
 
