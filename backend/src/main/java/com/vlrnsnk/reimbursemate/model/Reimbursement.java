@@ -28,7 +28,8 @@ public class Reimbursement {
     @Column(nullable = false)
     private Status status;
 
-    @ManyToOne
+//    @ManyToOn
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
 

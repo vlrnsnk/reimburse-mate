@@ -91,7 +91,6 @@ public class UserController {
      * @param userId User id
      * @return No content if user is deleted, not found otherwise
      */
-    @Transactional
     @RequiresRole(User.Role.MANAGER)
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {

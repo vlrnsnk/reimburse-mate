@@ -32,4 +32,12 @@ public interface ReimbursementRepository extends JpaRepository<Reimbursement, Lo
      */
     List<Reimbursement> findByUserIdAndStatus(Long userId, Reimbursement.Status status);
 
+    /**
+     * Find reimbursements by user id
+     *
+     * @param  Approver id
+     * @return List of reimbursements with the given approver id
+     */
+    void deleteByUserId(Long userId);
+
 }

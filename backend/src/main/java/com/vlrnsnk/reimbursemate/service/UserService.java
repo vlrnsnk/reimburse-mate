@@ -8,10 +8,12 @@ import com.vlrnsnk.reimbursemate.exception.UserCreationException;
 import com.vlrnsnk.reimbursemate.exception.UserNotFoundException;
 import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.User;
+import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +24,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final ReimbursementRepository reimbursementRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, ReimbursementRepository reimbursementRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.reimbursementRepository = reimbursementRepository;
     }
 
     /**
@@ -115,13 +119,24 @@ public class UserService {
      *
      * @param userId User id
      */
+    @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
+        reimbursementRepository.deleteByUserId(user.getId());
+
         userRepository.delete(user);
     }
 
+    /**
+     * Update user profile
+     *
+     * @param userId User id
+     * @param userProfileUpdateDTO Request body with updated user profile
+     * @param session HttpSession
+     * @return Updated user
+     */
     public UserDTO updateUserProfile(
             Long userId,
             UserProfileUpdateDTO userProfileUpdateDTO,
