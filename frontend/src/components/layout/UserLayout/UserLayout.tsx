@@ -29,7 +29,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
         setTimeout(() => {
           navigate('/login');
           toast.dismiss(loadingToast);
-        }, 2000);
+        }, 1000);
 
         console.log(response);
       } catch (error) {
@@ -50,7 +50,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
           </Link>
           <nav className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <span className="mt-2 sm:mt-0 sm:ml-2 text-md text-gray-900">
-              Hello, <span className="italic text-blue-600">{role.role}</span>
+              Hello, <span className="italic text-blue-600">{localStorage.getItem('username')}</span>
             </span>
             <Link
               to="/logout"

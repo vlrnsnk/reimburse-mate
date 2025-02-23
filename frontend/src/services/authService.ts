@@ -18,9 +18,8 @@ const loginUser = async (user: UserLoginRequest): Promise<UserResponse> => {
   try {
     const response = await api.post(
       '/auth/login',
-      user, {
-      withCredentials: true,
-    });
+      user,
+    );
 
     return response.data;
   } catch (error: any) {
@@ -33,9 +32,7 @@ const loginUser = async (user: UserLoginRequest): Promise<UserResponse> => {
 
 const logoutUser = async (): Promise<void> => {
   try {
-    const response = await api.post('/auth/logout', {}, {
-      withCredentials: true,
-    });
+    const response = await api.post('/auth/logout');
 
     return response.data;
   } catch (error: any) {

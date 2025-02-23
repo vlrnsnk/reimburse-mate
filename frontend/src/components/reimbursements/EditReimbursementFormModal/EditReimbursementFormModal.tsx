@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/Button/Button';
-import { Input } from '@/components/ui/Input/Input';
+import { useEffect } from "react";
+import { Button } from "@/components/ui/Button/Button";
+import { Input } from "@/components/ui/Input/Input";
 
 interface EditReimbursementFormModalProps {
   isOpen: boolean;
   handleClose: () => void;
   handleSave: () => void;
-  amount: number,
-  setAmount: (value: number) => void,
-  description: string,
-  setDescription: (value: string) => void,
+  amount: number;
+  setAmount: (value: number) => void;
+  description: string;
+  setDescription: (value: string) => void;
 }
 
 const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
@@ -21,7 +21,6 @@ const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
   description,
   setDescription,
 }) => {
-
   const handleSaveButtonClick = () => {
     handleSave();
     handleClose();
@@ -29,20 +28,20 @@ const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         handleClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [handleClose]);
 
   const handleClickOutside = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).classList.contains('modal-overlay')) {
+    if ((e.target as HTMLElement).classList.contains("modal-overlay")) {
       handleClose();
     }
   };
@@ -58,25 +57,35 @@ const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
     >
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-semibold mb-8">Edit Reimbursement</h2>
-        <Input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
-          required
-        />
-        <Input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(parseFloat(e.target.value))}
-          placeholder="Amount"
-          required
-        />
+        <label className="block mb-1 text-left">
+          Description:
+          <Input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
+            required
+            additionalClasses="mt-2"
+          />
+        </label>
+        <label className="block mb-1 text-left">
+          Amount:
+          <Input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(parseFloat(e.target.value))}
+            placeholder="Amount"
+            required
+            additionalClasses="mt-2"
+          />
+        </label>
         <div className="flex justify-between gap-2">
           <Button
             handleClick={handleSaveButtonClick}
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
-            isActive={description.length > 0 && amount !== undefined && amount > 0}
+            isActive={
+              description.length > 0 && amount !== undefined && amount > 0
+            }
           >
             Save
           </Button>

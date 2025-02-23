@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
         } else {
           navigate('/employee/reimbursements');
         }
-      }, 2000);
+      }, 1000);
 
       const { id, username, role } = response;
 

@@ -53,7 +53,7 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
       toast.error('Failed to update user role. Please try again later.');
       console.error('Error updating user role:', error);
     }
-    
+
     setIsRoleChangeModalOpen(false);
   };
 
@@ -104,7 +104,6 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
         isOpen={isDeleteModalOpen}
         handleClose={() => setIsDeleteModalOpen(false)}
         handleDeleteUser={() => handleDeleteUser(user.id)}
-        userId={id}
       />
 
       <ChangeUserRoleModal

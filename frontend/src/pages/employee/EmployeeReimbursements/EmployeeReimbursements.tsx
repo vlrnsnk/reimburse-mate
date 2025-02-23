@@ -28,7 +28,7 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
     []
   );
   const [newReimbursementAmount, setNewReimbursementAmount] =
-    useState<number>(0);
+    useState<number | undefined>(undefined);
   const [newReimbursementDescription, setNewReimbursementDescription] =
     useState<string>("");
 
@@ -55,16 +55,15 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
 
   const handleSaveReimbursement = async () => {
     const payload: ReimbursementRequest = {
-      userId: 4,
+      userId: localStorage.getItem("userId") as unknown as number,
       description: newReimbursementDescription,
       amount: newReimbursementAmount,
       status: "PENDING",
     };
-    console.log(payload);
 
     try {
       const response = await createReimbursement(payload);
-      setNewReimbursementAmount(0);
+      setNewReimbursementAmount(undefined);
       setNewReimbursementDescription("");
       toast.success("Reimbursement created successfully!");
       console.log(response);
@@ -88,7 +87,7 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
         {role === "MANAGER" ? "Manage" : "Your"} Reimbursements
       </h1>
       <div className="flex justify-center mb-8">
-        {isPersonal && (
+        {(isPersonal || localStorage.getItem("role") === "EMPLOYEE") && (
           <Button
           handleClick={() => setIsCreateModalOpen(true)}
           className="rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"

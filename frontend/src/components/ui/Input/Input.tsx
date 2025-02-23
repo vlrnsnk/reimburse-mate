@@ -6,6 +6,7 @@ const Input: React.FC<InputProps> = ({
   type,
   placeholder,
   required = false,
+  additionalClasses,
 }) => {
   return (
     <input
@@ -14,7 +15,7 @@ const Input: React.FC<InputProps> = ({
       value={value}
       onChange={onChange}
       required={required}
-      className="w-full mb-4 p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:invalid:border-red-600 focus:invalid:ring-red-600"
+      className={`w-full mb-4 p-2 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:invalid:border-red-600 focus:invalid:ring-red-600 ${additionalClasses}`}
     />
   );
 };

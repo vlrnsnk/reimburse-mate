@@ -1,4 +1,4 @@
-import { UserRequest, UserResponse } from '@/interfaces/user';
+import { UserCreateRequest, UserResponse } from '@/interfaces/user';
 import { api } from './api';
 import { UserRole } from '@/interfaces/UserRole';
 
@@ -14,7 +14,7 @@ const getUsers = async (): Promise<UserResponse[]> => {
   }
 };
 
-const createUser = async (user: UserRequest): Promise<UserResponse> => {
+const createUser = async (user: UserCreateRequest): Promise<UserResponse> => {
   try {
     const response = await api.post('/users', user);
 
@@ -51,11 +51,25 @@ const updateUserRole = async (userId: number, role: UserRole): Promise<UserRespo
 
     throw new Error(errorMessage);
   }
-}
+};
+
+const deleteReimbursementByUserIdAndReimbursementId = async (userId: number, reimbursementId: number): Promise<void> => {
+  try {
+    const response = await api.delete(`/users/${userId}/reimbursements/${reimbursementId}`);
+
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Failed to delete reimbursement. Please try again later.';
+    console.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+};
 
 export {
   getUsers,
   createUser,
   deleteUser,
   updateUserRole,
+  deleteReimbursementByUserIdAndReimbursementId,
 };

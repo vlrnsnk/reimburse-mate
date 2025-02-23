@@ -173,7 +173,11 @@ public class ReimbursementService {
         Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
                 .orElseThrow(() -> new ReimbursementNotFoundException("Reimbursement with ID " + reimbursementId + " not found."));
 
-        if (reimbursement.getStatus() != Reimbursement.Status.PENDING || !reimbursement.getUser().getId().equals(userId)) {
+        User.Role userRole = (User.Role) session.getAttribute("role");
+
+        if (!(userRole.equals(User.Role.MANAGER) ||
+                reimbursement.getStatus() == Reimbursement.Status.PENDING && reimbursement.getUser().getId().equals(userId))) {
+//        if (reimbursement.getStatus() != Reimbursement.Status.PENDING || !reimbursement.getUser().getId().equals(userId)) {
             throw new InvalidReimbursementStatusException("Reimbursement is not in a pending state or does not belong to the user");
         }
 

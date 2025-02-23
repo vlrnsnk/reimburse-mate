@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/Button/Button";
 interface DeleteReimbursementModalProps {
   isOpen: boolean;
   handleClose: () => void;
-  handleDelete: (reimbursementId: number) => void;
+  handleDelete: (userId: number, reimbursementId: number) => void;
   reimbursementId: number;
+  userId: number;
 }
 
 const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
@@ -13,6 +14,7 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
   handleClose,
   handleDelete,
   reimbursementId,
+  userId,
 }) => {
   // Close modal on ESC or click outside
   useEffect(() => {
@@ -36,7 +38,7 @@ const DeleteReimbursementModal: React.FC<DeleteReimbursementModalProps> = ({
   };
 
   const handleDeleteButtonClick = () => {
-      handleDelete(reimbursementId);
+      handleDelete(userId, reimbursementId);
       handleClose();
   }
 

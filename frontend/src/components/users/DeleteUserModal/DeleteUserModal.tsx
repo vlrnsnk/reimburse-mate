@@ -5,14 +5,12 @@ interface DeleteUserModalProps {
   isOpen: boolean;
   handleClose: () => void;
   handleDeleteUser: () => void;
-  userId: number;
 }
 
 const DeleteUserModal: React.FC<DeleteUserModalProps> = ({
   isOpen,
   handleClose,
   handleDeleteUser,
-  userId,
 }) => {
   // Close modal on ESC or click outside
   useEffect(() => {
@@ -52,8 +50,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-semibold mb-8">Delete User</h2>
         <p className="text-gray-700 mb-6">
-        Are you sure you want to delete this user with ID{" "}
-          {userId}?
+        Are you sure you want to delete this user?
         </p>
         <div className="flex justify-between space-x-2">
           <Button

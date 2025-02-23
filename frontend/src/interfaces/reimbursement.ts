@@ -5,7 +5,7 @@ import { ReimbursementStatus } from './ReimbursementStatus';
  */
 export interface ReimbursementRequest {
   description: string;
-  amount: number;
+  amount: number | undefined;
   status: ReimbursementStatus;
   userId: number;
 };

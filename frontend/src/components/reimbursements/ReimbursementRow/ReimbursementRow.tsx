@@ -6,9 +6,10 @@ import { EditReimbursementFormModal } from '@/components/reimbursements/EditReim
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
 import { UserRole } from '@/interfaces/UserRole';
 import { ResolveReimbursementModal } from '../ResolveReimbursementModal/ResolveReimbursementModal';
-import { deleteReimbursement, resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
+import { resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
 import toast from 'react-hot-toast';
 import { ReimbursementStatus } from '@/interfaces/ReimbursementStatus';
+import { deleteReimbursementByUserIdAndReimbursementId } from '@/services/userService';
 
 interface ReimbursementCardProps {
   reimbursement: ReimbursementResponse;
@@ -35,7 +36,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
 
   const handleEditReimbursement = async () => {
     const payload: ReimbursementRequest = {
-      userId: 4,
+      userId: localStorage.getItem("userId") as unknown as number,
       description: newReimbursementDescription,
       amount: newReimbursementAmount,
       status: status,
@@ -81,9 +82,9 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
     }
   };
 
-  const handleDeleteReimbursement = async (reimbursementId: number) => {
+  const handleDeleteReimbursement = async (userId: number, reimbursementId: number) => {
     try {
-      const response = await deleteReimbursement(reimbursementId);
+      const response = await deleteReimbursementByUserIdAndReimbursementId(userId, reimbursementId);
 
       if (handleReimbursementChanged) {
         handleReimbursementChanged();
@@ -168,6 +169,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
         handleClose={() => setIsDeleteModalOpen(false)}
         handleDelete={handleDeleteReimbursement}
         reimbursementId={id}
+        userId={localStorage.getItem("userId") as unknown as number}
       />
 
       <ResolveReimbursementModal

@@ -6,7 +6,7 @@ interface CreateReimbursementFormModalProps {
   isOpen: boolean;
   handleClose: () => void;
   handleSave: () => void;
-  amount: number,
+  amount: number | undefined,
   setAmount: (value: number) => void,
   description: string,
   setDescription: (value: string) => void,
