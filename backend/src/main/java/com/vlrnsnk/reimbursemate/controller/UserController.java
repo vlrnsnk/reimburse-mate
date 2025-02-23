@@ -3,6 +3,7 @@ package com.vlrnsnk.reimbursemate.controller;
 import com.vlrnsnk.reimbursemate.aop.RequiresRole;
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.dto.UserProfileUpdateDTO;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
@@ -172,6 +173,25 @@ public class UserController {
         reimbursementService.deleteReimbursementByUserIdAndReimbursementId(userId, reimbursementId, session);
 
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Update user profile
+     *
+     * @param userId User id
+     * @param userProfileUpdateDTO User profile update data
+     * @param session HttpSession
+     * @return Updated user
+     */
+    @PatchMapping("/{userId}/profile")
+    public ResponseEntity<UserDTO> updateUserProfile(
+            @PathVariable Long userId,
+            @RequestBody UserProfileUpdateDTO userProfileUpdateDTO,
+            HttpSession session
+    ) {
+        UserDTO updatedUser = userService.updateUserProfile(userId, userProfileUpdateDTO, session);
+
+        return ResponseEntity.ok(updatedUser);
     }
 
 }

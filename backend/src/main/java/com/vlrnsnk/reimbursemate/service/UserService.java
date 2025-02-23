@@ -1,6 +1,7 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.dto.UserProfileUpdateDTO;
 import com.vlrnsnk.reimbursemate.exception.AuthorizationException;
 import com.vlrnsnk.reimbursemate.exception.InvalidUserRoleException;
 import com.vlrnsnk.reimbursemate.exception.UserCreationException;
@@ -119,6 +120,28 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
         userRepository.delete(user);
+    }
+
+    public UserDTO updateUserProfile(
+            Long userId,
+            UserProfileUpdateDTO userProfileUpdateDTO,
+            HttpSession session
+    ) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to update this user!");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+
+        user.setFirstName(userProfileUpdateDTO.getFirstName());
+        user.setLastName(userProfileUpdateDTO.getLastName());
+        user.setUsername(userProfileUpdateDTO.getUsername());
+        userRepository.save(user);
+
+        return userMapper.toDTO(user);
     }
 
 }
