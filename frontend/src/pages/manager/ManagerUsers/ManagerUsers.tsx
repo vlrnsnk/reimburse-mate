@@ -8,15 +8,18 @@ const ManagerUsers: React.FC = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isErrorLoading, setIsErrorLoading] = useState<boolean>(false);
 
   const fetchData = async () => {
     setIsLoading(true);
+    setIsErrorLoading(false);
 
     try {
       const users = await getUsers();
       setUsers(users);
     } catch (error: any) {
       // TODO: Add type guard
+      setIsErrorLoading(true);
       console.log(error.message);
     } finally {
       setIsLoading(false);
@@ -37,6 +40,10 @@ const ManagerUsers: React.FC = () => {
       {isLoading ? (
         <div className="flex justify-center">
           <ScaleLoader color="navy" margin={4} loading={isLoading} />
+        </div>
+      ) : isErrorLoading ? (
+        <div className="error-message text-red-500">
+          Something went wrong while loading the data. Please try again later.
         </div>
       ) : users && users.length > 0
         ? <UserList

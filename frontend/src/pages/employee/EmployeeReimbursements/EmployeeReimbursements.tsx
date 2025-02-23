@@ -35,9 +35,11 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
     useState<string>("");
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isErrorLoading, setIsErrorLoading] = useState<boolean>(false);
 
   const fetchData = async () => {
     setIsLoading(true);
+    setIsErrorLoading(false);
 
     try {
       const userId: number = localStorage.getItem(
@@ -52,6 +54,7 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
       setReimbursements(reimbursements);
     } catch (error: any) {
       // TODO: Add type guard
+      setIsErrorLoading(true);
       console.log(error.message);
     } finally {
       setIsLoading(false);
@@ -110,6 +113,10 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
       {isLoading ? (
         <div className="flex justify-center">
           <ScaleLoader color="navy" margin={4} loading={isLoading} />
+        </div>
+      ) : isErrorLoading ? (
+        <div className="error-message text-red-500">
+          Something went wrong while loading the data. Please try again later.
         </div>
       ) : reimbursements && reimbursements.length > 0 ? (
         <ReimbursementList
