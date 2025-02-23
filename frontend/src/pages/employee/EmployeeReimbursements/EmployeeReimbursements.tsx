@@ -14,6 +14,7 @@ import {
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 
 interface ReimbursementListProps {
   role?: UserRole;
@@ -27,8 +28,9 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
   const [reimbursements, setReimbursements] = useState<ReimbursementResponse[]>(
     []
   );
-  const [newReimbursementAmount, setNewReimbursementAmount] =
-    useState<number | undefined>(undefined);
+  const [newReimbursementAmount, setNewReimbursementAmount] = useState<
+    number | undefined
+  >(undefined);
   const [newReimbursementDescription, setNewReimbursementDescription] =
     useState<string>("");
 
@@ -38,7 +40,9 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
     setIsLoading(true);
 
     try {
-      const userId: number = localStorage.getItem("userId") as unknown as number;
+      const userId: number = localStorage.getItem(
+        "userId"
+      ) as unknown as number;
 
       const reimbursements: ReimbursementResponse[] =
         role === "MANAGER" && !isPersonal
@@ -94,17 +98,19 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
       <div className="flex justify-center mb-8">
         {(isPersonal || localStorage.getItem("role") === "EMPLOYEE") && (
           <Button
-          handleClick={() => setIsCreateModalOpen(true)}
-          className="rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
-          aria-label="Add Reimbursement"
-        >
-          <PlusIcon className="w-6 h-6 pr-2" />
-          Create New Reimbursement
-        </Button>
+            handleClick={() => setIsCreateModalOpen(true)}
+            className="rounded-full flex items-center justify-center shadow-sm bg-green-600 hover:bg-green-700"
+            aria-label="Add Reimbursement"
+          >
+            <PlusIcon className="w-6 h-6 pr-2" />
+            Create New Reimbursement
+          </Button>
         )}
       </div>
-      {!isLoading ? (
-        <div className="loading-spinner">Loading...</div>
+      {isLoading ? (
+        <div className="flex justify-center">
+          <ClipLoader size={50} color="blue" loading={isLoading} />
+        </div>
       ) : reimbursements && reimbursements.length > 0 ? (
         <ReimbursementList
           reimbursements={reimbursements}
