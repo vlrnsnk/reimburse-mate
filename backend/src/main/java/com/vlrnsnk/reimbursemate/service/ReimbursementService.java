@@ -250,6 +250,7 @@ public class ReimbursementService {
     public void deleteReimbursement(Long reimbursementId) {
         Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
                 .orElseThrow(() -> new ReimbursementNotFoundException("Reimbursement not found with ID: " + reimbursementId));
+        System.out.println(reimbursement);
 
         reimbursementRepository.delete(reimbursement);
     }

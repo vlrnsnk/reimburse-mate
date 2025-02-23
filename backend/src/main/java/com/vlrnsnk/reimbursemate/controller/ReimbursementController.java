@@ -79,6 +79,7 @@ public class ReimbursementController {
     @RequiresRole(User.Role.MANAGER)
     @DeleteMapping("/{reimbursementId}")
     public ResponseEntity<Void> deleteReimbursement(@PathVariable Long reimbursementId) {
+        System.out.println("Deleting reimbursement with id: " + reimbursementId);
         reimbursementService.deleteReimbursement(reimbursementId);
 
         return ResponseEntity.noContent().build();

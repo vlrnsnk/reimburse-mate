@@ -6,7 +6,7 @@ import { EditReimbursementFormModal } from '@/components/reimbursements/EditReim
 import { DeleteReimbursementModal } from '@/components/reimbursements/DeleteReimbursementModal/DeleteReimbursementModal';
 import { UserRole } from '@/interfaces/UserRole';
 import { ResolveReimbursementModal } from '../ResolveReimbursementModal/ResolveReimbursementModal';
-import { resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
+import { deleteReimbursement, resolveReimbursement, updateReimbursement } from '@/services/reimbursementService';
 import toast from 'react-hot-toast';
 import { ReimbursementStatus } from '@/interfaces/ReimbursementStatus';
 import { deleteReimbursementByUserIdAndReimbursementId } from '@/services/userService';
@@ -62,7 +62,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
     const payload: ReimbursementResolveRequest = {
       status: newStatus,
       comment: newComment,
-      approverId: 1,
+      approverId: localStorage.getItem("userId") as unknown as number,
     };
 
     console.log(payload);
@@ -84,13 +84,21 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
 
   const handleDeleteReimbursement = async (userId: number, reimbursementId: number) => {
     try {
-      const response = await deleteReimbursementByUserIdAndReimbursementId(userId, reimbursementId);
+      const role = localStorage.getItem("role") as unknown as UserRole;
+
+      if (role === "EMPLOYEE") {
+        const response = await deleteReimbursementByUserIdAndReimbursementId(userId, reimbursementId);
+        console.log(response);
+      } else {
+        const response = await deleteReimbursement(reimbursementId);
+        console.log(response);
+      }
 
       if (handleReimbursementChanged) {
         handleReimbursementChanged();
       }
 
-      console.log(response);
+      // console.log(response);
       toast.success('Reimbursement deleted successfully!');
     } catch (error: any) {
       toast.error('Failed to delete reimbursement. Please try again later.');
