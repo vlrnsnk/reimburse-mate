@@ -101,13 +101,13 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
   return (
     <>
       <tr className="hover:bg-gray-50 transition-colors duration-200">
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-xs">
+        <td className="px-6 py-4 text-sm text-gray-900 max-w-xs">
           {description}
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <td className="px-6 py-4 text-sm text-gray-900">
           ${amount}
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <td className="px-6 py-4 text-sm text-gray-900">
           <span
             className={`px-2 py-1 rounded-full text-xs font-semibold ${
               status === "PENDING"
@@ -120,7 +120,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
             {status}
           </span>
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <td className="px-6 py-4 text-sm text-gray-900 max-w-xs">
           {comment ?? "N/A"}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
