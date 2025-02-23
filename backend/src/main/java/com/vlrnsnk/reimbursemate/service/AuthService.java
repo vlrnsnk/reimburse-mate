@@ -68,6 +68,8 @@ public class AuthService {
 
         session.setAttribute("userId", user.getId());
         session.setAttribute("username", user.getUsername());
+        session.setAttribute("firstName", user.getFirstName());
+        session.setAttribute("lastName", user.getLastName());
         session.setAttribute("role", user.getRole());
 
         return userMapper.toDTO(user);
