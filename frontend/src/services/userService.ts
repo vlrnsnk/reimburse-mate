@@ -1,4 +1,4 @@
-import { UserCreateRequest, UserResponse } from '@/interfaces/user';
+import { UserCreateRequest, UserResponse, UserUpdateRequest } from '@/interfaces/user';
 import { api } from './api';
 import { UserRole } from '@/interfaces/UserRole';
 
@@ -66,10 +66,24 @@ const deleteReimbursementByUserIdAndReimbursementId = async (userId: number, rei
   }
 };
 
+const updateUserProfile = async  (userId: number | null, user: UserUpdateRequest): Promise<UserResponse> => {
+  try {
+    const response = await api.patch(`/users/${userId}/profile`, user);
+
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Failed to update user profile. Please try again later.';
+    console.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+};
+
 export {
   getUsers,
   createUser,
   deleteUser,
   updateUserRole,
   deleteReimbursementByUserIdAndReimbursementId,
+  updateUserProfile,
 };

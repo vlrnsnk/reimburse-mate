@@ -37,10 +37,12 @@ const LoginPage: React.FC = () => {
         }
       }, 1000);
 
-      const { id, username, role } = response;
+      const { id, username, firstName, lastName, role } = response;
 
       localStorage.setItem('userId', id.toString());
       localStorage.setItem('username', username);
+      localStorage.setItem('firstName', firstName);
+      localStorage.setItem('lastName', lastName);
       localStorage.setItem('role', role);
 
       console.log(response);

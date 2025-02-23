@@ -10,16 +10,17 @@ import { LogoutPage } from '@/pages/shared/LogoutPage/LogoutPage';
 import { UserRole } from '@/interfaces/UserRole';
 import { ManagerReimbursements } from '@/pages/manager/ManagerReimbursements/ManagerReimbursements';
 import { ManagerUsers } from '@/pages/manager/ManagerUsers/ManagerUsers';
+import { ProfilePage } from '@/pages/shared/ProfilePage/ProfilePage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      { path: '/', element: <HomePage /> },
-      { path: '/login', element: <LoginPage /> },
-      { path: '/register', element: <RegisterPage /> },
-      { path: '/logout', element: <LogoutPage /> },
+      { path: '', element: <HomePage /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
+      { path: 'logout', element: <LogoutPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
     children: [
       { path: '', element: <Navigate to="/employee/reimbursements" /> },
       { path: 'reimbursements', element: <EmployeeReimbursements /> },
+      { path: 'profile', element: <ProfilePage />},
     ],
   },
   {
@@ -39,6 +41,7 @@ const router = createBrowserRouter([
       { path: 'reimbursements', element: <ManagerReimbursements isPersonal={false} /> },
       { path: 'reimbursements/my', element: <ManagerReimbursements isPersonal={true} /> },
       { path: 'users', element: <ManagerUsers /> },
+      { path: 'profile', element: <ProfilePage />},
     ],
   },
 ]);

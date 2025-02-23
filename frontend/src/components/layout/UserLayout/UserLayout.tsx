@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer/Footer";
 import Logo from "@/assets/logo.svg?react";
 import { UserRole } from "@/interfaces/UserRole";
@@ -12,6 +12,8 @@ interface UserLayoutProps {
 
 const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handleLogoutClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,6 +28,8 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
 
       localStorage.removeItem("userId");
       localStorage.removeItem("username");
+      localStorage.removeItem("firstName");
+      localStorage.removeItem("lastName");
       localStorage.removeItem("role");
 
       setTimeout(() => {
@@ -53,8 +57,9 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
           <nav className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <span className="mt-2 sm:mt-0 sm:ml-2 text-md text-gray-900">
               Hello,{" "}
-              <span className="italic text-blue-600 font-semibold">
-                {localStorage.getItem("username")}
+              <span className="italic text-blue-600 font-semibold hover:underline hover:text-blue-800 active:text-blue-400">
+                <Link to={localStorage.getItem("role") as unknown as string === "MANAGER" ? `/manager/profile` : `/employee/profile`}>
+                {localStorage.getItem("username")}</Link>
               </span>
             </span>
             <Link
@@ -69,7 +74,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
         </div>
       </header>
       <main className="flex flex-col flex-grow items-center px-4 py-6 overflow-x-auto">
-        {role.role === "MANAGER" && (
+        {role.role === "MANAGER" && !currentPath.endsWith('profile') && (
           <div className="p-4 flex flex-col gap-4 sm:flex-row mb-4">
             <Button to="/manager/reimbursements/my">My Reimbursements</Button>
             <Button to="/manager/reimbursements">Manage Reimbursements</Button>

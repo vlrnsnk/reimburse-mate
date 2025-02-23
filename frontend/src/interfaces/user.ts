@@ -19,6 +19,12 @@ export interface UserLoginRequest {
   password: string;
 };
 
+export interface UserUpdateRequest {
+  username: string;
+  firstName: string;
+  lastName: string;
+};
+
 /**
  * Interface for User response object from backend
  */
