@@ -14,7 +14,7 @@ const Button: React.FC<ButtonProps> = ({
   const location = useLocation();
 
   const isActiveRoute = to ? location.pathname === to : false;
-  const activeClass = 'bg-gray-50 text-gray-800 border  hover:text-gray-100';
+  const activeClass = 'bg-gray-50 text-gray-800 border hover:text-gray-800 hover:bg-gray-50';
 
   return (
     <button
