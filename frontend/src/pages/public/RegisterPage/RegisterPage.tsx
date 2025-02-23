@@ -1,7 +1,7 @@
 import { PageWrapper } from '@/components/layout/PageWrapper/PageWrapper';
 import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
-import { UserRequest } from '@/interfaces/user';
+import { UserCreateRequest } from '@/interfaces/user';
 import { UserRole } from '@/interfaces/UserRole';
 import { registerUser } from '@/services/authService';
 import { useState } from 'react';
@@ -18,8 +18,8 @@ const RegisterPage: React.FC = () => {
 
   const isRegisterButtonActive = firstName !== '' && lastName !== '' && username !== '' && password !== '';
 
-  const handleRegister = async () => {
-    const payload: UserRequest = {
+  const handleRegister: () => void = async () => {
+    const payload: UserCreateRequest = {
       firstName,
       lastName,
       username,
@@ -30,7 +30,7 @@ const RegisterPage: React.FC = () => {
     try {
       const response = await registerUser(payload);
       // TODO: clear fields
-      const loadingToast = toast.loading('You are being redirected to the login page...')
+      const loadingToast = toast.loading('You are being redirected to the login page...');
       toast.success('Registration successful!');
 
       setTimeout(() => {
