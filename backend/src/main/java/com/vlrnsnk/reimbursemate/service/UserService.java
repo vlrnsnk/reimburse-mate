@@ -124,8 +124,6 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
-        reimbursementRepository.deleteByUserId(user.getId());
-
         userRepository.delete(user);
     }
 

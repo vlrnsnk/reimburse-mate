@@ -7,6 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import java.util.List;
+import java.util.ArrayList;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -38,6 +41,9 @@ public class User {
     @Column(nullable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reimbursement> reimbursements = new ArrayList<>();
 
     public User() {
     }
