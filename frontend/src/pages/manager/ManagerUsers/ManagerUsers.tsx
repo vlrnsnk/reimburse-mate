@@ -2,7 +2,7 @@ import { UserList } from '@/components/users/UserList/UserList';
 import { UserResponse } from '@/interfaces/user';
 import { getUsers } from '@/services/userService';
 import { useEffect, useState } from 'react';
-import { ClipLoader } from 'react-spinners';
+import { ScaleLoader } from 'react-spinners';
 
 const ManagerUsers: React.FC = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
@@ -36,7 +36,7 @@ const ManagerUsers: React.FC = () => {
       <h1 className="text-2xl font-semibold mb-12 text-gray-700">Manage Users</h1>
       {isLoading ? (
         <div className="flex justify-center">
-          <ClipLoader size={50} color="blue" loading={isLoading} />
+          <ScaleLoader color="navy" margin={4} loading={isLoading} />
         </div>
       ) : users && users.length > 0
         ? <UserList

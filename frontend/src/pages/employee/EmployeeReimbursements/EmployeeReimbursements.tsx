@@ -14,7 +14,7 @@ import {
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { ClipLoader } from "react-spinners";
+import { ScaleLoader } from "react-spinners";
 
 interface ReimbursementListProps {
   role?: UserRole;
@@ -109,7 +109,7 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
       </div>
       {isLoading ? (
         <div className="flex justify-center">
-          <ClipLoader size={50} color="blue" loading={isLoading} />
+          <ScaleLoader color="navy" margin={4} loading={isLoading} />
         </div>
       ) : reimbursements && reimbursements.length > 0 ? (
         <ReimbursementList
