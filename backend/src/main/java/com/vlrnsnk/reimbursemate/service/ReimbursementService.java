@@ -250,4 +250,27 @@ public class ReimbursementService {
         reimbursementRepository.delete(reimbursement);
     }
 
+    /**
+     * Delete reimbursement by user id and reimbursement id
+     *
+     * @param userId User id
+     * @param reimbursementId Reimbursement id
+     */
+    public void deleteReimbursementByUserIdAndReimbursementId(
+            Long userId,
+            Long reimbursementId,
+            HttpSession session
+    ) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to view this user!");
+        }
+
+        Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
+                .orElseThrow(() -> new ReimbursementNotFoundException("Reimbursement not found with ID: " + reimbursementId));
+
+        reimbursementRepository.delete(reimbursement);
+    }
+
 }

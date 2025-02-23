@@ -157,4 +157,22 @@ public class UserController {
         return ResponseEntity.ok(updatedReimbursement);
     }
 
+    /**
+     * Delete a reimbursement
+     *
+     * @param userId User id
+     * @param reimbursementId Reimbursement id
+     * @return No content if reimbursement is deleted, not found otherwise
+     */
+    @DeleteMapping("/{userId}/reimbursements/{reimbursementId}")
+    public ResponseEntity<Void> deleteReimbursement(
+            @PathVariable Long userId,
+            @PathVariable Long reimbursementId,
+            HttpSession session
+    ) {
+        reimbursementService.deleteReimbursementByUserIdAndReimbursementId(userId, reimbursementId, session);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
