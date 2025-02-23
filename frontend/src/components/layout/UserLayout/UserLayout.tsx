@@ -53,7 +53,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
           <nav className="mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <span className="mt-2 sm:mt-0 sm:ml-2 text-md text-gray-900">
               Hello,{" "}
-              <span className="italic text-blue-600">
+              <span className="italic text-blue-600 font-semibold">
                 {localStorage.getItem("username")}
               </span>
             </span>
