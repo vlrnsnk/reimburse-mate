@@ -44,6 +44,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Login a user
+     *
+     * @param loginRequestDTO the login request
+     * @param session the session
+     * @return the logged in user
+     */
     public UserDTO loginUser(LoginRequestDTO loginRequestDTO, HttpSession session) {
         if (loginRequestDTO.getUsername() == null || loginRequestDTO.getUsername().isBlank()) {
             throw new MissingRequiredFieldsException("Username is required");
@@ -64,6 +71,15 @@ public class AuthService {
         session.setAttribute("role", user.getRole());
 
         return userMapper.toDTO(user);
+    }
+
+    /**
+     * Logout a user
+     *
+     * @param session the session
+     */
+    public void logoutUser(HttpSession session) {
+        session.invalidate();
     }
 
 }
