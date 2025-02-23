@@ -67,6 +67,11 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
         {role.role === "MANAGER" && (
           <div className="p-4 flex space-x-4 mb-4">
             <Button
+              to="/manager/reimbursements/my"
+            >
+              My Reimbursements
+            </Button>
+            <Button
               to="/manager/reimbursements"
             >
               Manage Reimbursements
