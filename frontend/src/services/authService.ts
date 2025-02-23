@@ -31,7 +31,23 @@ const loginUser = async (user: UserLoginRequest): Promise<UserResponse> => {
   }
 };
 
+const logoutUser = async (): Promise<void> => {
+  try {
+    const response = await api.post('/auth/logout', {}, {
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Failed to logout user. Please try again later.';
+    console.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+};
+
 export {
   registerUser,
   loginUser,
+  logoutUser,
 };

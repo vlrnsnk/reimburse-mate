@@ -36,7 +36,7 @@ const RegisterPage: React.FC = () => {
       setTimeout(() => {
         toast.dismiss(loadingToast);
         navigate('/login');
-      }, 3000);
+      }, 2000);
 
       console.log(response);
     } catch (error: any) {

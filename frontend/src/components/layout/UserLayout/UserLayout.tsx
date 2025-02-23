@@ -1,14 +1,43 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer/Footer";
 import Logo from "@/assets/logo.svg?react";
 import { UserRole } from '@/interfaces/UserRole';
 import { Button } from '@/components/ui/Button/Button';
+import toast from 'react-hot-toast';
+import { logoutUser } from '@/services/authService';
 
 interface UserLayoutProps {
   role: UserRole;
 };
 
 const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
+  const navigate = useNavigate();
+
+  const handleLogoutClick = async (e: React.MouseEvent) => {
+      e.preventDefault();
+
+      try {
+        const response = await logoutUser();
+
+        const loadingToast = toast.loading('You are being redirected to the login page...');
+        toast.success('Logout successful!');
+
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+
+        setTimeout(() => {
+          navigate('/login');
+          toast.dismiss(loadingToast);
+        }, 2000);
+
+        console.log(response);
+      } catch (error) {
+        toast.error('Logout failed. Please try again.');
+        console.error('Logout failed:', error);
+      }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-gray-50 shadow-sm">
@@ -25,6 +54,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
             </span>
             <Link
               to="/logout"
+              onClick={handleLogoutClick}
               className="text-gray-800 hover:text-gray-900 active:text-blue-600 transition-colors duration-300 ease-in-out"
               aria-label="Logout Page"
             >
