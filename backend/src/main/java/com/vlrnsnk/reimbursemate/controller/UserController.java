@@ -1,10 +1,12 @@
 package com.vlrnsnk.reimbursemate.controller;
 
+import com.vlrnsnk.reimbursemate.aop.RequiresRole;
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class UserController {
      *
      * @return List of all users
      */
+    @RequiresRole(User.Role.MANAGER)
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
@@ -46,8 +49,8 @@ public class UserController {
      * @return User with the given id
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
-        UserDTO userDTO = userService.getUserById(userId);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId, HttpSession session) {
+        UserDTO userDTO = userService.getUserById(userId, session);
 
         return ResponseEntity.ok(userDTO);
     }
@@ -72,6 +75,7 @@ public class UserController {
      * @param request Request body with new role
      * @return Updated user
      */
+    @RequiresRole(User.Role.MANAGER)
     @PatchMapping("/{userId}/role")
     public ResponseEntity<UserDTO> updateUserRole(@PathVariable Long userId, @RequestBody Map<String, String> request) {
         String newRole = request.get("role");
@@ -86,6 +90,7 @@ public class UserController {
      * @param userId User id
      * @return No content if user is deleted, not found otherwise
      */
+    @RequiresRole(User.Role.MANAGER)
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
@@ -103,12 +108,13 @@ public class UserController {
     @GetMapping("/{userId}/reimbursements")
     public ResponseEntity<List<ReimbursementDTO>> getUserReimbursements(
             @PathVariable Long userId,
-            @RequestParam(required = false) String status
+            @RequestParam(required = false) String status,
+            HttpSession session
     ) {
         List<ReimbursementDTO> reimbursements =
                 (status == null)
-                        ? reimbursementService.getReimbursementsByUserId(userId)
-                        : reimbursementService.getReimbursementsByUserIdAndStatus(userId, status);
+                        ? reimbursementService.getReimbursementsByUserId(userId, session)
+                        : reimbursementService.getReimbursementsByUserIdAndStatus(userId, status, session);
 
         return ResponseEntity.ok(reimbursements);
     }
@@ -123,9 +129,10 @@ public class UserController {
     @PostMapping("/{userId}/reimbursements")
     public ResponseEntity<ReimbursementDTO> createUserReimbursement(
             @PathVariable Long userId,
-            @RequestBody ReimbursementDTO reimbursementDTO
+            @RequestBody ReimbursementDTO reimbursementDTO,
+            HttpSession session
     ) {
-        ReimbursementDTO createdReimbursement = reimbursementService.createReimbursement(userId, reimbursementDTO);
+        ReimbursementDTO createdReimbursement = reimbursementService.createReimbursement(userId, reimbursementDTO, session);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReimbursement);
     }
@@ -142,9 +149,10 @@ public class UserController {
     public ResponseEntity<ReimbursementDTO> updateReimbursement(
             @PathVariable Long userId,
             @PathVariable Long reimbursementId,
-            @RequestBody Map<String, String> request
+            @RequestBody Map<String, String> request,
+            HttpSession session
     ) {
-        ReimbursementDTO updatedReimbursement = reimbursementService.updateReimbursement(userId, reimbursementId, request);
+        ReimbursementDTO updatedReimbursement = reimbursementService.updateReimbursement(userId, reimbursementId, request, session);
 
         return ResponseEntity.ok(updatedReimbursement);
     }

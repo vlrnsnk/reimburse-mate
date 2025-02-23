@@ -99,11 +99,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    /**
+     * Handle AuthenticationException
+     *
+     * @param e AuthenticationException
+     * @return CustomErrorResponse
+     */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<CustomErrorResponse> handleSecurityException(AuthenticationException e) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    /**
+     * Handle AuthorizationException
+     *
+     * @param e AuthorizationException
+     * @return CustomErrorResponse
+     */
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<CustomErrorResponse> handleAuthorizationException(AuthorizationException e) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
     /**

@@ -8,12 +8,14 @@ import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import com.vlrnsnk.reimbursemate.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -72,7 +74,13 @@ public class ReimbursementService {
      * @param userId User id
      * @return List of reimbursements with the given user id
      */
-    public List<ReimbursementDTO> getReimbursementsByUserId(Long userId) {
+    public List<ReimbursementDTO> getReimbursementsByUserId(Long userId, HttpSession session) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to view this user!");
+        }
+
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException("User not found with ID: " + userId);
         }
@@ -89,7 +97,13 @@ public class ReimbursementService {
      * @param status Reimbursement status
      * @return List of reimbursements with the given user id and status
      */
-    public List<ReimbursementDTO> getReimbursementsByUserIdAndStatus(Long userId, String status) {
+    public List<ReimbursementDTO> getReimbursementsByUserIdAndStatus(Long userId, String status, HttpSession session) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to view this user!");
+        }
+
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException("User not found with ID: " + userId);
         }
@@ -121,7 +135,13 @@ public class ReimbursementService {
      * @param reimbursementDTO ReimbursementDTO
      * @return Created reimbursement
      */
-    public ReimbursementDTO createReimbursement(Long userId, ReimbursementDTO reimbursementDTO) {
+    public ReimbursementDTO createReimbursement(Long userId, ReimbursementDTO reimbursementDTO, HttpSession session) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to view this user!");
+        }
+
         User user = userService.getUserEntityById(userId);
         Reimbursement reimbursement = reimbursementMapper.toEntity(reimbursementDTO);
         reimbursement.setUser(user);
@@ -141,8 +161,15 @@ public class ReimbursementService {
     public ReimbursementDTO updateReimbursement(
             Long userId,
             Long reimbursementId,
-            Map<String, String> updates
+            Map<String, String> updates,
+            HttpSession session
     ) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to view this user!");
+        }
+
         Reimbursement reimbursement = reimbursementRepository.findById(reimbursementId)
                 .orElseThrow(() -> new ReimbursementNotFoundException("Reimbursement with ID " + reimbursementId + " not found."));
 
@@ -222,4 +249,5 @@ public class ReimbursementService {
 
         reimbursementRepository.delete(reimbursement);
     }
+
 }

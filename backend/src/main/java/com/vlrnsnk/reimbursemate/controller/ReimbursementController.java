@@ -1,6 +1,8 @@
 package com.vlrnsnk.reimbursemate.controller;
 
+import com.vlrnsnk.reimbursemate.aop.RequiresRole;
 import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
+import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ public class ReimbursementController {
      * @param status Reimbursement status
      * @return List of reimbursements
      */
+    @RequiresRole(User.Role.MANAGER)
     @GetMapping
     public ResponseEntity<List<ReimbursementDTO>> getAllReimbursements(@RequestParam(required = false) String status) {
         try {
@@ -52,6 +55,7 @@ public class ReimbursementController {
      * @param request Request body
      * @return Resolved reimbursement
      */
+    @RequiresRole(User.Role.MANAGER)
     @PatchMapping("/{reimbursementId}")
     public ResponseEntity<ReimbursementDTO> resolveReimbursement(
             @PathVariable Long reimbursementId,
@@ -73,6 +77,7 @@ public class ReimbursementController {
      * @param reimbursementId Reimbursement id
      * @return No content if reimbursement is deleted, not found otherwise
      */
+    @RequiresRole(User.Role.MANAGER)
     @DeleteMapping("/{reimbursementId}")
     public ResponseEntity<Void> deleteReimbursement(@PathVariable Long reimbursementId) {
         reimbursementService.deleteReimbursement(reimbursementId);

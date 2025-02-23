@@ -1,16 +1,19 @@
 package com.vlrnsnk.reimbursemate.service;
 
 import com.vlrnsnk.reimbursemate.dto.UserDTO;
+import com.vlrnsnk.reimbursemate.exception.AuthorizationException;
 import com.vlrnsnk.reimbursemate.exception.InvalidUserRoleException;
 import com.vlrnsnk.reimbursemate.exception.UserCreationException;
 import com.vlrnsnk.reimbursemate.exception.UserNotFoundException;
 import com.vlrnsnk.reimbursemate.mapper.UserMapper;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,7 +45,13 @@ public class UserService {
      * @param userId User id
      * @return User with the given id
      */
-    public UserDTO getUserById(Long userId) {
+    public UserDTO getUserById(Long userId, HttpSession session) {
+        Long sessionUserId = (Long) session.getAttribute("userId");
+
+        if (!Objects.equals(sessionUserId, userId)) {
+            throw new AuthorizationException("User is not authorized to view this user!");
+        }
+
         return userRepository.findById(userId)
                 .map(userMapper::toDTO)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
