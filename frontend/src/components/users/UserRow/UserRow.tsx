@@ -1,7 +1,7 @@
 import { UserResponse } from '@/interfaces/user';
 import { UserRole } from '@/interfaces/UserRole';
 import { Button } from '@/components/ui/Button/Button';
-import { TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { DeleteUserModal } from '@/components/users/DeleteUserModal/DeleteUserModal';
 import { ChangeUserRoleModal } from '@/components/users/ChangeUserRoleModal/ChangeUserRoleModal';
@@ -87,7 +87,7 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
               className="w-12 h-12 flex items-center justify-center text-orange-600 hover:text-orange-100 bg-orange-100 hover:bg-orange-600 active:bg-orange-700"
               aria-label="Change Role"
             >
-              <ArrowPathIcon />
+              <AdjustmentsHorizontalIcon />
             </Button>
             <Button
               handleClick={() => setIsDeleteModalOpen(true)}
