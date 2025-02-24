@@ -5,6 +5,7 @@ import { UserRole } from "@/interfaces/UserRole";
 import { Button } from "@/components/ui/Button/Button";
 import toast from "react-hot-toast";
 import { logoutUser } from "@/services/authService";
+import { useEffect } from 'react';
 
 interface UserLayoutProps {
   role: UserRole;
@@ -14,6 +15,14 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
+
+  useEffect(() => {
+    if (localStorage.getItem("userId") === null) {
+      console.log("User not logged in");
+      toast.error("You must be logged in to access this page.");
+      navigate("/login");
+    }
+  }, []);
 
   const handleLogoutClick = async (e: React.MouseEvent) => {
     e.preventDefault();
