@@ -5,6 +5,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   handleClick,
   isActive = true,
+  type,
   to,
   className,
 }) => {
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
         onClick={handleClick ? handleClick : to ? () => navigate(to) : undefined}
         className={`${buttonClasses} ${isActiveRoute ? activeClass : ''}`}
         disabled={!isActive}
+        type={type}
       >
       {children}
     </button>

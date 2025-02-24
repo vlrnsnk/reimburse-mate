@@ -46,6 +46,17 @@ const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
     }
   };
 
+  const isSaveButtonActive =
+    description.length > 0 && amount !== undefined && amount > 0;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isSaveButtonActive) {
+      handleSaveButtonClick();
+    }
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -57,45 +68,45 @@ const EditReimbursementFormModal: React.FC<EditReimbursementFormModalProps> = ({
     >
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-semibold mb-8">Edit Reimbursement</h2>
-        <label className="block mb-1 text-left">
-          Description:
-          <Input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-            required
-            additionalClasses="mt-2"
-          />
-        </label>
-        <label className="block mb-1 text-left">
-          Amount:
-          <Input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(parseFloat(e.target.value))}
-            placeholder="Amount"
-            required
-            additionalClasses="mt-2"
-          />
-        </label>
-        <div className="flex justify-between gap-2">
-          <Button
-            handleClick={handleSaveButtonClick}
-            className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
-            isActive={
-              description.length > 0 && amount !== undefined && amount > 0
-            }
-          >
-            Save
-          </Button>
-          <Button
-            handleClick={handleClose}
-            className="text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
-          >
-            Cancel
-          </Button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <label className="block mb-1 text-left">
+            Description:
+            <Input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+              required
+              additionalClasses="mt-2"
+            />
+          </label>
+          <label className="block mb-1 text-left">
+            Amount:
+            <Input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(parseFloat(e.target.value))}
+              placeholder="Amount"
+              required
+              additionalClasses="mt-2"
+            />
+          </label>
+          <div className="flex justify-between gap-2">
+            <Button
+              type="submit"
+              className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
+              isActive={isSaveButtonActive}
+            >
+              Save
+            </Button>
+            <Button
+              handleClick={handleClose}
+              className="text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

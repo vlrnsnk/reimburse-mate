@@ -47,6 +47,16 @@ const CreateReimbursementFormModal: React.FC<CreateReimbursementFormModalProps> 
     }
   };
 
+  const isCreateButtonActive = description.length > 0 && amount !== undefined && amount > 0;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isCreateButtonActive) {
+      handleSaveButtonClick();
+    }
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -58,6 +68,7 @@ const CreateReimbursementFormModal: React.FC<CreateReimbursementFormModalProps> 
     >
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-semibold mb-8">Create Reimbursement</h2>
+        <form onSubmit={handleSubmit}>
         <Input
           type="text"
           value={description}
@@ -74,9 +85,9 @@ const CreateReimbursementFormModal: React.FC<CreateReimbursementFormModalProps> 
         />
         <div className="flex justify-between gap-2">
           <Button
-            handleClick={handleSaveButtonClick}
+            type="submit"
             className="text-green-600 hover:text-green-100 bg-green-100 hover:bg-green-600 active:bg-green-700"
-            isActive={description.length > 0 && amount !== undefined && amount > 0}
+            isActive={isCreateButtonActive}
           >
             Create
           </Button>
@@ -86,7 +97,9 @@ const CreateReimbursementFormModal: React.FC<CreateReimbursementFormModalProps> 
           >
             Cancel
           </Button>
+
         </div>
+        </form>
       </div>
     </div>
   );
