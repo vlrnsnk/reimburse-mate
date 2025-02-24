@@ -3,14 +3,16 @@ package com.vlrnsnk.reimbursemate.dto;
 import com.vlrnsnk.reimbursemate.model.User;
 
 public class UserDTO {
-    private final Long id;
-    private final String firstName;
-    private final String lastName;
-    private final String username;
-    private final User.Role role;
-    private final String createdAt;
-    private final String updatedAt;
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private User.Role role;
+    private String createdAt;
+    private String updatedAt;
 
+    public UserDTO() {
+    }
     /**
      * Constructor for sending User response without password
      *
@@ -66,6 +68,34 @@ public class UserDTO {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRole(User.Role role) {
+        this.role = role;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
