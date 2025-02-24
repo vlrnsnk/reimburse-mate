@@ -11,26 +11,27 @@ import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.repository.ReimbursementRepository;
 import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final ReimbursementRepository reimbursementRepository;
 
     @Autowired
     public UserService(UserRepository userRepository, UserMapper userMapper, ReimbursementRepository reimbursementRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.reimbursementRepository = reimbursementRepository;
     }
 
     /**
@@ -39,8 +40,9 @@ public class UserService {
      * @return List of all users
      */
     public List<UserDTO> getAllUsers() {
+        logger.info("Fetching all users");
         List<User> users = userRepository.findAll();
-
+        logger.info("Found {} users", users.size());
         return userMapper.toDTOList(users);
     }
 
@@ -51,15 +53,20 @@ public class UserService {
      * @return User with the given id
      */
     public UserDTO getUserById(Long userId, HttpSession session) {
+        logger.info("Fetching user by ID: {}", userId);
         Long sessionUserId = (Long) session.getAttribute("userId");
 
         if (!Objects.equals(sessionUserId, userId)) {
+            logger.warn("User with ID {} is not authorized to view user with ID: {}", sessionUserId, userId);
             throw new AuthorizationException("User is not authorized to view this user!");
         }
 
         return userRepository.findById(userId)
                 .map(userMapper::toDTO)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+                .orElseThrow(() -> {
+                    logger.warn("User not found with ID: {}", userId);
+                    return new UserNotFoundException("User with id " + userId + " not found");
+                });
     }
 
     /**
@@ -69,8 +76,12 @@ public class UserService {
      * @return User entity with the given id
      */
     public User getUserEntityById(Long userId) {
+        logger.info("Fetching user entity by ID: {}", userId);
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+                .orElseThrow(() -> {
+                    logger.warn("User not found with ID: {}", userId);
+                    return new UserNotFoundException("User with id " + userId + " not found");
+                });
     }
 
     /**
@@ -80,11 +91,13 @@ public class UserService {
      * @return Created user
      */
     public UserDTO createUser(User user) {
+        logger.info("Creating new user with username: {}", user.getUsername());
         try {
             User createdUser = userRepository.save(user);
-
+            logger.info("User created successfully with ID: {}", createdUser.getId());
             return userMapper.toDTO(createdUser);
         } catch (Exception e) {
+            logger.error("Failed to create user: {}", e.getMessage(), e);
             throw new UserCreationException("Failed to create user: " + e.getMessage());
         }
     }
@@ -97,20 +110,26 @@ public class UserService {
      * @return Updated user
      */
     public UserDTO updateUserRole(Long userId, String newRole) {
+        logger.info("Updating role for user ID: {} to {}", userId, newRole);
         User.Role role;
 
         try {
             role = User.Role.valueOf(newRole);
         } catch (IllegalArgumentException e) {
+            logger.error("Invalid role provided: {}", newRole, e);
             throw new InvalidUserRoleException("Invalid role: " + newRole);
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+                .orElseThrow(() -> {
+                    logger.warn("User not found with ID: {}", userId);
+                    return new UserNotFoundException("User with id " + userId + " not found");
+                });
 
         user.setRole(role);
         userRepository.save(user);
-
+        logger.info("User role updated successfully for user ID: {}", userId);
+        
         return userMapper.toDTO(user);
     }
 
@@ -121,10 +140,15 @@ public class UserService {
      */
     @Transactional
     public void deleteUser(Long userId) {
+        logger.info("Deleting user with ID: {}", userId);
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+                .orElseThrow(() -> {
+                    logger.warn("User not found with ID: {}", userId);
+                    return new UserNotFoundException("User with id " + userId + " not found");
+                });
 
         userRepository.delete(user);
+        logger.info("User deleted successfully with ID: {}", userId);
     }
 
     /**
@@ -140,19 +164,25 @@ public class UserService {
             UserProfileUpdateDTO userProfileUpdateDTO,
             HttpSession session
     ) {
+        logger.info("Updating profile for user ID: {}", userId);
         Long sessionUserId = (Long) session.getAttribute("userId");
 
         if (!Objects.equals(sessionUserId, userId)) {
+            logger.warn("User with ID {} is not authorized to update user with ID: {}", sessionUserId, userId);
             throw new AuthorizationException("User is not authorized to update this user!");
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
+                .orElseThrow(() -> {
+                    logger.warn("User not found with ID: {}", userId);
+                    return new UserNotFoundException("User with id " + userId + " not found");
+                });
 
         user.setFirstName(userProfileUpdateDTO.getFirstName());
         user.setLastName(userProfileUpdateDTO.getLastName());
         user.setUsername(userProfileUpdateDTO.getUsername());
         userRepository.save(user);
+        logger.info("User profile updated successfully for user ID: {}", userId);
 
         return userMapper.toDTO(user);
     }
