@@ -129,7 +129,7 @@ public class UserService {
         user.setRole(role);
         userRepository.save(user);
         logger.info("User role updated successfully for user ID: {}", userId);
-        
+
         return userMapper.toDTO(user);
     }
 
