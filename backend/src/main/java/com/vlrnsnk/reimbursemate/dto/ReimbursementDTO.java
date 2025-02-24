@@ -5,15 +5,18 @@ import com.vlrnsnk.reimbursemate.model.Reimbursement;
 import java.math.BigDecimal;
 
 public class ReimbursementDTO {
-    private final Long id;
+    private Long id;
     private String description;
     private BigDecimal amount;
-    private final Reimbursement.Status status;
-    private final Long userId;
-    private final Long approverId;
-    private final String comment;
-    private final String createdAt;
-    private final String updatedAt;
+    private Reimbursement.Status status;
+    private Long userId;
+    private Long approverId;
+    private String comment;
+    private String createdAt;
+    private String updatedAt;
+
+    public ReimbursementDTO() {
+    }
 
     /**
      * Constructor for output (all fields)
@@ -108,4 +111,33 @@ public class ReimbursementDTO {
     public void setDescription(String newDescription) {
         this.description = newDescription;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setApproverId(Long approverId) {
+        this.approverId = approverId;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setStatus(Reimbursement.Status status) {
+        this.status = status;
+    }
+
 }
