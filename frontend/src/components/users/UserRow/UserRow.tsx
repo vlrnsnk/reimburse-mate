@@ -86,6 +86,7 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
               handleClick={() => setIsRoleChangeModalOpen(true)}
               className="w-12 h-12 flex items-center justify-center text-orange-600 hover:text-orange-100 bg-orange-100 hover:bg-orange-600 active:bg-orange-700"
               aria-label="Change Role"
+              isActive={localStorage.getItem('userId') !== id.toString()}
             >
               <AdjustmentsHorizontalIcon />
             </Button>
@@ -93,6 +94,7 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
               handleClick={() => setIsDeleteModalOpen(true)}
               className="w-12 h-12 flex items-center justify-center text-red-600 hover:text-red-100 bg-red-100 hover:bg-red-600 active:bg-red-700"
               aria-label="Delete"
+              isActive={localStorage.getItem('userId') !== id.toString()}
             >
               <TrashIcon />
             </Button>
