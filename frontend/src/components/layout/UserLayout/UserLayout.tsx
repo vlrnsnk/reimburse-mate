@@ -31,7 +31,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
       const response = await logoutUser();
 
       const loadingToast = toast.loading(
-        "You are being redirected to the login page..."
+        "You are being redirected to the home page..."
       );
       toast.success("Logout successful!");
 
@@ -42,7 +42,7 @@ const UserLayout: React.FC<UserLayoutProps> = (role: UserLayoutProps) => {
       localStorage.removeItem("role");
 
       setTimeout(() => {
-        navigate("/login");
+        navigate("/");
         toast.dismiss(loadingToast);
       }, 1000);
 
