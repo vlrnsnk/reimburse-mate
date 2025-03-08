@@ -11,7 +11,7 @@ RUN apk add --no-cache maven
 WORKDIR /app
 
 # Copy the source code
-COPY . .
+COPY ./backend /app
 
 # Build the application
 RUN mvn clean package -DskipTests
