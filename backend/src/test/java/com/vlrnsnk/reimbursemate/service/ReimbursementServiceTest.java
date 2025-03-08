@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ReimbursementServiceTest {
+class ReimbursementServiceTest {
 
     @Mock
     private ReimbursementRepository reimbursementRepository;
@@ -69,6 +69,7 @@ public class ReimbursementServiceTest {
         reimbursementDTO.setUserId(1L);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetAllReimbursements() {
         // Mock behavior
@@ -133,6 +134,7 @@ public class ReimbursementServiceTest {
         verify(reimbursementRepository, never()).findByUserId(any());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetReimbursementsByUserIdAndStatus_Success() {
         // Mock behavior

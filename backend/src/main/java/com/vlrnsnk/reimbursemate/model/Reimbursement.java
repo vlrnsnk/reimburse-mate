@@ -2,8 +2,6 @@ package com.vlrnsnk.reimbursemate.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
@@ -28,7 +26,6 @@ public class Reimbursement {
     @Column(nullable = false)
     private Status status;
 
-//    @ManyToOn
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
