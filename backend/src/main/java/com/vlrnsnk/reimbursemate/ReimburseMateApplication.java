@@ -29,6 +29,13 @@ public class ReimburseMateApplication {
 		String dbPassword = dotenv != null ? dotenv.get("DATABASE_PASSWORD") : System.getenv("DATABASE_PASSWORD");
 
 		/*
+		 * Set the environment variables for the database connection
+		 */
+		System.setProperty("DB_URL", dbUrl);
+		System.setProperty("DB_USERNAME", dbUsername);
+		System.setProperty("DB_PASSWORD", dbPassword);
+
+		/*
 		 * Start the Spring Boot Application
 		 */
 		SpringApplication.run(ReimburseMateApplication.class, args);
