@@ -94,7 +94,7 @@ const EmployeeReimbursements: React.FC<ReimbursementListProps> = ({
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   return (
-    <div className="text-center">
+    <div className="text-center w-full xl:w-3/4 overflow-x-auto">
       <h1 className="text-2xl font-semibold mb-8 text-gray-700">
         {role === "MANAGER" ? "Manage" : "Your"} Reimbursements
       </h1>

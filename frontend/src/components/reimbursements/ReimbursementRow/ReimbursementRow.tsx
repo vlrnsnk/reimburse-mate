@@ -132,7 +132,7 @@ const ReimbursementRow: React.FC<ReimbursementCardProps> = ({
           {comment ?? "N/A"}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex gap-4">
             {role === 'MANAGER' && (
               <Button
                 handleClick={() => setIsResolveModalOpen(true)}

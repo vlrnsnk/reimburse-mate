@@ -81,7 +81,7 @@ const UserRow: React.FC<UserRowProps> = ({ user, handleRowDeleted }) => {
           {new Date(createdAt).toLocaleDateString()}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex gap-4">
             <Button
               handleClick={() => setIsRoleChangeModalOpen(true)}
               className="w-12 h-12 flex items-center justify-center text-orange-600 hover:text-orange-100 bg-orange-100 hover:bg-orange-600 active:bg-orange-700"

@@ -35,7 +35,7 @@ const ManagerUsers: React.FC = () => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center w-full xl:w-3/4">
       <h1 className="text-2xl font-semibold mb-12 text-gray-700">Manage Users</h1>
       {isLoading ? (
         <div className="flex justify-center">
