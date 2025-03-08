@@ -4,6 +4,9 @@ FROM eclipse-temurin:17-jdk-alpine AS build
 # Specify author
 LABEL authors="vlrnsnk"
 
+# Install Maven
+RUN apk add --no-cache maven
+
 # Set the working directory
 WORKDIR /app
 
@@ -11,7 +14,7 @@ WORKDIR /app
 COPY . .
 
 # Build the application
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Use a JRE image to run the application (smaller size)
 FROM eclipse-temurin:17-jre-alpine
