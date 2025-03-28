@@ -8,7 +8,6 @@ import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,6 @@ public class UserController {
     private final UserService userService;
     private final ReimbursementService reimbursementService;
 
-    @Autowired
     public UserController(UserService userService, ReimbursementService reimbursementService) {
         this.userService = userService;
         this.reimbursementService = reimbursementService;

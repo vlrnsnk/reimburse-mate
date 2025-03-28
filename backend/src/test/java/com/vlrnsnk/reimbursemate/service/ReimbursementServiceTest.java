@@ -85,6 +85,7 @@ class ReimbursementServiceTest {
         verify(reimbursementRepository, times(1)).findAll();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetReimbursementsByStatus_Success() {
         // Mock behavior
@@ -107,6 +108,7 @@ class ReimbursementServiceTest {
         verify(reimbursementRepository, never()).findByStatus(any());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetReimbursementsByUserId_Success() {
         // Mock behavior

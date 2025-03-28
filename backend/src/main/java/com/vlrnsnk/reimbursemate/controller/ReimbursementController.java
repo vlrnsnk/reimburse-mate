@@ -5,7 +5,6 @@ import com.vlrnsnk.reimbursemate.dto.ReimbursementDTO;
 import com.vlrnsnk.reimbursemate.model.User;
 import com.vlrnsnk.reimbursemate.service.ReimbursementService;
 import com.vlrnsnk.reimbursemate.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,6 @@ public class ReimbursementController {
 
     private final ReimbursementService reimbursementService;
 
-    @Autowired
     public ReimbursementController(ReimbursementService reimbursementService, UserService userService) {
         this.reimbursementService = reimbursementService;
     }

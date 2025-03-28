@@ -11,7 +11,6 @@ import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,7 +29,6 @@ public class ReimbursementService {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @Autowired
     public ReimbursementService(
             ReimbursementRepository reimbursementRepository,
             ReimbursementMapper reimbursementMapper,

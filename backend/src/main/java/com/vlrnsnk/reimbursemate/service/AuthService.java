@@ -11,7 +11,6 @@ import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +21,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    @Autowired
     public AuthService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
