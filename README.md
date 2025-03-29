@@ -15,20 +15,20 @@
 
 ## Features
 **Employee Functions**
-✔ Submit new reimbursement requests
-✔ View all past reimbursement tickets
-✔ Filter requests by "Pending" status
+- Submit new reimbursement requests
+- View all past reimbursement tickets
+- Filter requests by "Pending" status
 
 **Manager Functions**
-✔ Approve or deny reimbursement requests
-✔ View all employee submissions
-✔ Delete user accounts (with cascading reimbursements)
-✔ Promote user to manager role
+- Approve or deny reimbursement requests
+- View all employee submissions
+- Delete user accounts (with cascading reimbursements)
+- Promote user to manager role
 
 **Core System**
-🔒 Session-based authentication
-📱 Responsive Tailwind CSS frontend
-📊 PostgreSQL database with proper constraints
+- 🔒 Session-based authentication
+- 📱 Responsive Tailwind CSS frontend
+- 📊 PostgreSQL database with proper constraints
 
 *(Optional features shown in Swagger but not required for core functionality)*
 
