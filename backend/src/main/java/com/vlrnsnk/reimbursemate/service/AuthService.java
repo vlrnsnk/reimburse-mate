@@ -11,6 +11,7 @@ import com.vlrnsnk.reimbursemate.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -37,15 +39,19 @@ public class AuthService {
 
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             logger.warn("Username already exists: {}", user.getUsername());
+
             throw new UserCreationException("Username already exists");
         }
 
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User createdUser = userRepository.save(user);
             logger.info("User registered successfully with ID: {}", createdUser.getId());
+
             return userMapper.toDTO(createdUser);
         } catch (Exception e) {
             logger.error("Failed to create user: {}", e.getMessage(), e);
+
             throw new UserCreationException("Failed to create user: " + e.getMessage());
         }
     }
@@ -70,15 +76,18 @@ public class AuthService {
             throw new MissingRequiredFieldsException("Password is required");
         }
 
-        User user = userRepository.findByUsernameAndPassword(
-                        loginRequestDTO.getUsername(),
-                        loginRequestDTO.getPassword()
-                )
+        User user = userRepository.findByUsername(loginRequestDTO.getUsername())
                 .orElseThrow(() -> {
-                    logger.warn("Invalid username or password for username: {}", loginRequestDTO.getUsername());
-                    return new UserNotFoundException("Invalid username or password");
+                    logger.warn("User not found: {}", loginRequestDTO.getUsername());
+                    throw new UserNotFoundException("Invalid username or password");
                 });
 
+        System.out.println("i'm hrere");
+        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
+            logger.warn("Invalid password for user: {}", loginRequestDTO.getUsername());
+            throw new UserNotFoundException("Invalid username or password");
+        }
+        System.out.println("and threre");
         session.setAttribute("userId", user.getId());
         session.setAttribute("username", user.getUsername());
         session.setAttribute("firstName", user.getFirstName());
@@ -86,6 +95,7 @@ public class AuthService {
         session.setAttribute("role", user.getRole());
 
         logger.info("User logged in successfully with ID: {}", user.getId());
+
         return userMapper.toDTO(user);
     }
 
