@@ -82,12 +82,12 @@ public class AuthService {
                     throw new UserNotFoundException("Invalid username or password");
                 });
 
-        System.out.println("i'm hrere");
+
         if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
             logger.warn("Invalid password for user: {}", loginRequestDTO.getUsername());
             throw new UserNotFoundException("Invalid username or password");
         }
-        System.out.println("and threre");
+        
         session.setAttribute("userId", user.getId());
         session.setAttribute("username", user.getUsername());
         session.setAttribute("firstName", user.getFirstName());
